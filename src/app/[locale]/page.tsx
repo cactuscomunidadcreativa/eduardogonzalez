@@ -35,7 +35,7 @@ export default function HomePage({
             alt="Eduardo González — Emotions · Decisions · Human Systems"
             width={501}
             height={256}
-            className="mx-auto mb-6 h-auto w-64 sm:w-80 lg:w-[24rem]"
+            className="mx-auto mb-6 h-auto w-80 sm:w-96 lg:w-[30rem]"
             priority
             unoptimized
           />

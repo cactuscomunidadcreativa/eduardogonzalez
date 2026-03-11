@@ -18,6 +18,12 @@ const stats = [
 
 const quickActions = [
   {
+    label: "Gestionar páginas",
+    href: "/admin/pages",
+    icon: FileText,
+    color: "bg-brand-orange",
+  },
+  {
     label: "Crear nuevo post",
     href: "/admin/posts/new",
     icon: Plus,

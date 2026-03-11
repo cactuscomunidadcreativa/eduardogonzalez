@@ -34,7 +34,7 @@ export function Header() {
             alt="Eduardo González"
             width={160}
             height={82}
-            className="h-10 w-auto sm:h-12"
+            className="h-12 w-auto sm:h-14"
             unoptimized
           />
         </Link>

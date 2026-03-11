@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Save, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Save, Check, Loader2 } from "lucide-react";
 
 export default function AdminSettingsPage() {
+  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [siteName, setSiteName] = useState("Eduardo González");
-  const [siteDescription, setSiteDescription] = useState(
-    "Emotions · Decisions · Systems"
-  );
+  const [siteDescription, setSiteDescription] = useState("Emotions · Decisions · Systems");
   const [contactEmail, setContactEmail] = useState("");
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
@@ -18,11 +18,47 @@ export default function AdminSettingsPage() {
   const [youtube, setYoutube] = useState("");
   const [twitter, setTwitter] = useState("");
 
-  function handleSave(e: React.FormEvent) {
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.siteName) setSiteName(data.siteName);
+        if (data.siteDescription) setSiteDescription(data.siteDescription);
+        if (data.contactEmail) setContactEmail(data.contactEmail);
+        if (data.seoTitle) setSeoTitle(data.seoTitle);
+        if (data.seoDescription) setSeoDescription(data.seoDescription);
+        if (data.instagram) setInstagram(data.instagram);
+        if (data.linkedin) setLinkedin(data.linkedin);
+        if (data.youtube) setYoutube(data.youtube);
+        if (data.twitter) setTwitter(data.twitter);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: persist settings to database
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    setSaving(true);
+    try {
+      await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          siteName, siteDescription, contactEmail,
+          seoTitle, seoDescription,
+          instagram, linkedin, youtube, twitter,
+        }),
+      });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch {
+      alert("Error al guardar");
+    }
+    setSaving(false);
+  }
+
+  if (loading) {
+    return <div className="py-12 text-center text-gray-400">Cargando configuración...</div>;
   }
 
   return (
@@ -37,9 +73,7 @@ export default function AdminSettingsPage() {
           <h3 className="mb-4 text-sm font-semibold text-gray-700">General</h3>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Nombre del sitio
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Nombre del sitio</label>
               <input
                 value={siteName}
                 onChange={(e) => setSiteName(e.target.value)}
@@ -47,9 +81,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Descripción
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Descripción</label>
               <textarea
                 rows={2}
                 value={siteDescription}
@@ -58,9 +90,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Correo de contacto
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Correo de contacto</label>
               <input
                 type="email"
                 value={contactEmail}
@@ -77,9 +107,7 @@ export default function AdminSettingsPage() {
           <h3 className="mb-4 text-sm font-semibold text-gray-700">SEO</h3>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Título SEO
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Título SEO</label>
               <input
                 value={seoTitle}
                 onChange={(e) => setSeoTitle(e.target.value)}
@@ -88,9 +116,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Descripción SEO
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Descripción SEO</label>
               <textarea
                 rows={3}
                 value={seoDescription}
@@ -104,14 +130,10 @@ export default function AdminSettingsPage() {
 
         {/* Social Media */}
         <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <h3 className="mb-4 text-sm font-semibold text-gray-700">
-            Redes Sociales
-          </h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-700">Redes Sociales</h3>
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Instagram
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Instagram</label>
               <input
                 value={instagram}
                 onChange={(e) => setInstagram(e.target.value)}
@@ -120,9 +142,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                LinkedIn
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">LinkedIn</label>
               <input
                 value={linkedin}
                 onChange={(e) => setLinkedin(e.target.value)}
@@ -131,9 +151,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                YouTube
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">YouTube</label>
               <input
                 value={youtube}
                 onChange={(e) => setYoutube(e.target.value)}
@@ -142,9 +160,7 @@ export default function AdminSettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm text-gray-500">
-                Twitter / X
-              </label>
+              <label className="mb-1 block text-sm text-gray-500">Twitter / X</label>
               <input
                 value={twitter}
                 onChange={(e) => setTwitter(e.target.value)}
@@ -159,9 +175,10 @@ export default function AdminSettingsPage() {
         <div className="flex items-center gap-4">
           <button
             type="submit"
-            className="flex items-center gap-2 rounded-lg bg-brand-orange px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-orange/90"
+            disabled={saving}
+            className="flex items-center gap-2 rounded-lg bg-brand-orange px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-orange/90 disabled:opacity-50"
           >
-            <Save size={16} />
+            {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
             Guardar cambios
           </button>
           {saved && (

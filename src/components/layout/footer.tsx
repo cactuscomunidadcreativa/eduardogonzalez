@@ -17,21 +17,14 @@ export function Footer() {
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3">
-              <Image
-                src="/images/logos/eg_logo_white.png"
-                alt="Eduardo González"
-                width={48}
-                height={48}
-                className="h-12 w-12"
-              />
-              <div>
-                <h3 className="font-title text-lg font-bold">
-                  Eduardo González
-                </h3>
-                <p className="text-sm text-brand-gray">{t("tagline")}</p>
-              </div>
-            </div>
+            <Image
+              src="/images/logos/eg_logo_name_tagline_transparent.png?v=2"
+              alt="Eduardo González"
+              width={200}
+              height={102}
+              className="h-auto w-40 sm:w-48"
+              unoptimized
+            />
             <p className="mt-4 max-w-md text-sm text-white/60">
               {t("tagline")}
             </p>
