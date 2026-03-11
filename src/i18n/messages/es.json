@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "about": "Qui\u00e9n Soy",
+    "whatIDo": "Qu\u00e9 Hago",
+    "projects": "Proyectos",
+    "ideas": "Ideas",
+    "books": "Libros",
+    "lab": "Lab",
+    "contact": "Contacto"
+  },
+  "home": {
+    "heroTitle": "Eduardo Gonz\u00e1lez",
+    "heroTagline": "Emotions \u00b7 Decisions \u00b7 Systems",
+    "heroSubtitle": "Exploro c\u00f3mo las emociones influyen en decisiones, liderazgo y sistemas humanos.",
+    "exploreIdeas": "Explorar ideas",
+    "viewProjects": "Ver proyectos",
+    "askAI": "Preguntar a la IA",
+    "featuredProjects": "Proyectos Destacados",
+    "latestIdeas": "\u00daltimas Ideas",
+    "viewAll": "Ver todos",
+    "newsletterTitle": "Mantente conectado",
+    "newsletterDescription": "Recibe ideas sobre emociones, decisiones y sistemas humanos.",
+    "newsletterPlaceholder": "tu@email.com",
+    "newsletterButton": "Suscribirse",
+    "principle": "Las organizaciones han aprendido a gestionar dinero, procesos y tecnolog\u00eda. Pero a\u00fan est\u00e1n aprendiendo a gestionar algo fundamental: las emociones."
+  },
+  "about": {
+    "title": "Qui\u00e9n Soy",
+    "storyTitle": "Mi Historia",
+    "timelineTitle": "Trayectoria",
+    "visionTitle": "Visi\u00f3n",
+    "exploringTitle": "Lo que estoy explorando",
+    "roles": {
+      "sixSeconds": "Director LATAM \u2013 Six Seconds",
+      "rowi": "Creador de ROWIIA",
+      "budgeting": "Desarrollador de Emotional Budgeting",
+      "cactus": "Fundador de Cactus Comunidad Creativa",
+      "author": "Autor de Redenci\u00f3n"
+    }
+  },
+  "whatIDo": {
+    "title": "Qu\u00e9 Hago",
+    "pillar1Title": "Inteligencia Emocional Aplicada",
+    "pillar1Desc": "Trabajo con organizaciones para desarrollar liderazgo y cultura basada en inteligencia emocional.",
+    "pillar2Title": "Emotional Budgeting",
+    "pillar2Desc": "Modelo organizacional que propone gestionar recursos emocionales como energ\u00eda, confianza, atenci\u00f3n y compromiso.",
+    "pillar3Title": "Tecnolog\u00eda Emocional",
+    "pillar3Desc": "ROWI y ROWIIA. Tecnolog\u00eda que ayuda a comprender patrones emocionales y decisiones.",
+    "pillar4Title": "Sistemas Humanos",
+    "pillar4Desc": "Exploraci\u00f3n de c\u00f3mo emociones, decisiones y estructuras crean sistemas organizacionales."
+  },
+  "projects": {
+    "title": "Proyectos",
+    "viewProject": "Ver proyecto"
+  },
+  "ideas": {
+    "title": "Ideas",
+    "readMore": "Leer m\u00e1s",
+    "minuteRead": "{minutes} min de lectura",
+    "allCategories": "Todas",
+    "emotions": "Emociones",
+    "decisions": "Decisiones",
+    "systems": "Sistemas",
+    "technology": "Tecnolog\u00eda",
+    "leadership": "Liderazgo",
+    "comments": "Comentarios",
+    "writeComment": "Escribe un comentario...",
+    "submitComment": "Enviar",
+    "commentPending": "Tu comentario est\u00e1 pendiente de aprobaci\u00f3n.",
+    "noArticles": "A\u00fan no hay art\u00edculos en esta categor\u00eda."
+  },
+  "books": {
+    "title": "Libros",
+    "buyNow": "Comprar",
+    "comingSoon": "Pr\u00f3ximamente"
+  },
+  "lab": {
+    "title": "Lab",
+    "subtitle": "Espacio experimental",
+    "description": "Modelos, diagramas, exploraciones e ideas visuales."
+  },
+  "contact": {
+    "title": "Contacto",
+    "name": "Nombre",
+    "email": "Email",
+    "type": "Tipo de consulta",
+    "conference": "Conferencia",
+    "consulting": "Consultor\u00eda",
+    "collaboration": "Colaboraci\u00f3n",
+    "media": "Medios",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "success": "Mensaje enviado. Te responder\u00e9 pronto."
+  },
+  "chat": {
+    "button": "Preg\u00fantale a Eduardo",
+    "placeholder": "Escribe tu pregunta...",
+    "greeting": "\u00a1Hola! Soy el asistente de Eduardo. Puedo responder sobre emociones, decisiones y sistemas humanos. \u00bfEn qu\u00e9 puedo ayudarte?"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo sali\u00f3 mal",
+    "share": "Compartir",
+    "back": "Volver",
+    "readMore": "Leer m\u00e1s"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "tagline": "Emotions \u00b7 Decisions \u00b7 Systems"
+  }
+}

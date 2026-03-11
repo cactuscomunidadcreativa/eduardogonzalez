@@ -1,0 +1,112 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "whatIDo": "What I Do",
+    "projects": "Projects",
+    "ideas": "Ideas",
+    "books": "Books",
+    "lab": "Lab",
+    "contact": "Contact"
+  },
+  "home": {
+    "heroTitle": "Eduardo Gonz\u00e1lez",
+    "heroTagline": "Emotions \u00b7 Decisions \u00b7 Systems",
+    "heroSubtitle": "I explore how emotions influence decisions, leadership, and human systems.",
+    "exploreIdeas": "Explore ideas",
+    "viewProjects": "View projects",
+    "askAI": "Ask the AI",
+    "featuredProjects": "Featured Projects",
+    "latestIdeas": "Latest Ideas",
+    "viewAll": "View all",
+    "newsletterTitle": "Stay connected",
+    "newsletterDescription": "Receive ideas about emotions, decisions, and human systems.",
+    "newsletterPlaceholder": "you@email.com",
+    "newsletterButton": "Subscribe",
+    "principle": "Organizations have learned to manage money, processes, and technology. But they are still learning to manage something fundamental: emotions."
+  },
+  "about": {
+    "title": "About",
+    "storyTitle": "My Story",
+    "timelineTitle": "Trajectory",
+    "visionTitle": "Vision",
+    "exploringTitle": "What I'm exploring",
+    "roles": {
+      "sixSeconds": "LATAM Director \u2013 Six Seconds",
+      "rowi": "Creator of ROWIIA",
+      "budgeting": "Developer of Emotional Budgeting",
+      "cactus": "Founder of Cactus Creative Community",
+      "author": "Author of Redemption"
+    }
+  },
+  "whatIDo": {
+    "title": "What I Do",
+    "pillar1Title": "Applied Emotional Intelligence",
+    "pillar1Desc": "I work with organizations to develop leadership and culture based on emotional intelligence.",
+    "pillar2Title": "Emotional Budgeting",
+    "pillar2Desc": "An organizational model that proposes managing emotional resources like energy, trust, attention, and commitment.",
+    "pillar3Title": "Emotional Technology",
+    "pillar3Desc": "ROWI and ROWIIA. Technology that helps understand emotional patterns and decisions.",
+    "pillar4Title": "Human Systems",
+    "pillar4Desc": "Exploring how emotions, decisions, and structures create organizational systems."
+  },
+  "projects": {
+    "title": "Projects",
+    "viewProject": "View project"
+  },
+  "ideas": {
+    "title": "Ideas",
+    "readMore": "Read more",
+    "minuteRead": "{minutes} min read",
+    "allCategories": "All",
+    "emotions": "Emotions",
+    "decisions": "Decisions",
+    "systems": "Systems",
+    "technology": "Technology",
+    "leadership": "Leadership",
+    "comments": "Comments",
+    "writeComment": "Write a comment...",
+    "submitComment": "Submit",
+    "commentPending": "Your comment is pending approval.",
+    "noArticles": "No articles in this category yet."
+  },
+  "books": {
+    "title": "Books",
+    "buyNow": "Buy now",
+    "comingSoon": "Coming soon"
+  },
+  "lab": {
+    "title": "Lab",
+    "subtitle": "Experimental space",
+    "description": "Models, diagrams, explorations, and visual ideas."
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "type": "Inquiry type",
+    "conference": "Conference",
+    "consulting": "Consulting",
+    "collaboration": "Collaboration",
+    "media": "Media",
+    "message": "Message",
+    "send": "Send message",
+    "success": "Message sent. I'll get back to you soon."
+  },
+  "chat": {
+    "button": "Ask Eduardo",
+    "placeholder": "Type your question...",
+    "greeting": "Hi! I'm Eduardo's assistant. I can answer about emotions, decisions, and human systems. How can I help you?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "share": "Share",
+    "back": "Back",
+    "readMore": "Read more"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "tagline": "Emotions \u00b7 Decisions \u00b7 Systems"
+  }
+}

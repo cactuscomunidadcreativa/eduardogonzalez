@@ -1,0 +1,300 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Auth.js models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(VIEWER)
+  accounts      Account[]
+  sessions      Session[]
+  comments      Comment[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+// Content models
+model Post {
+  id            String            @id @default(cuid())
+  slug          String            @unique
+  status        ContentStatus     @default(DRAFT)
+  category      PostCategory
+  featuredImage String?
+  readingTime   Int?
+  publishedAt   DateTime?
+  translations  PostTranslation[]
+  comments      Comment[]
+  tags          Tag[]             @relation("PostTags")
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([category])
+}
+
+model PostTranslation {
+  id        String @id @default(cuid())
+  postId    String
+  locale    String
+  title     String
+  excerpt   String @db.Text
+  content   String @db.Text
+  metaTitle String?
+  metaDesc  String?
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, locale])
+}
+
+model Project {
+  id            String               @id @default(cuid())
+  slug          String               @unique
+  status        ContentStatus        @default(DRAFT)
+  featuredImage String?
+  externalUrl   String?
+  sortOrder     Int                  @default(0)
+  translations  ProjectTranslation[]
+  tags          Tag[]                @relation("ProjectTags")
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+}
+
+model ProjectTranslation {
+  id          String  @id @default(cuid())
+  projectId   String
+  locale      String
+  title       String
+  subtitle    String?
+  description String  @db.Text
+  content     String  @db.Text
+  metaTitle   String?
+  metaDesc    String?
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+}
+
+model Book {
+  id            String            @id @default(cuid())
+  slug          String            @unique
+  status        ContentStatus     @default(DRAFT)
+  coverImage    String?
+  publishYear   Int?
+  buyUrl        String?
+  translations  BookTranslation[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model BookTranslation {
+  id          String @id @default(cuid())
+  bookId      String
+  locale      String
+  title       String
+  subtitle    String?
+  description String @db.Text
+  content     String @db.Text
+  metaTitle   String?
+  metaDesc    String?
+  book        Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, locale])
+}
+
+model Page {
+  id           String            @id @default(cuid())
+  slug         String            @unique
+  status       ContentStatus     @default(DRAFT)
+  template     String            @default("default")
+  translations PageTranslation[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model PageTranslation {
+  id        String @id @default(cuid())
+  pageId    String
+  locale    String
+  title     String
+  content   String @db.Text
+  metaTitle String?
+  metaDesc  String?
+  page      Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, locale])
+}
+
+model Tag {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  posts    Post[]    @relation("PostTags")
+  projects Project[] @relation("ProjectTags")
+}
+
+// Interaction models
+model Comment {
+  id          String           @id @default(cuid())
+  postId      String
+  userId      String?
+  authorName  String?
+  authorEmail String?
+  content     String           @db.Text
+  status      CommentStatus    @default(PENDING)
+  parentId    String?
+  parent      Comment?         @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[]        @relation("CommentReplies")
+  reactions   CommentReaction[]
+  post        Post             @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user        User?            @relation(fields: [userId], references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([postId, status])
+}
+
+model CommentReaction {
+  id        String  @id @default(cuid())
+  commentId String
+  emoji     String
+  sessionId String
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, sessionId, emoji])
+}
+
+model ContactSubmission {
+  id        String      @id @default(cuid())
+  name      String
+  email     String
+  type      ContactType
+  message   String      @db.Text
+  read      Boolean     @default(false)
+  createdAt DateTime    @default(now())
+}
+
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  locale         String    @default("es")
+  confirmed      Boolean   @default(false)
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int
+  width     Int?
+  height    Int?
+  alt       String?
+  createdAt DateTime @default(now())
+}
+
+model AITrainingDocument {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  category  String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChatConversation {
+  id        String        @id @default(cuid())
+  sessionId String
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model ChatMessage {
+  id             String           @id @default(cuid())
+  conversationId String
+  role           String
+  content        String           @db.Text
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime         @default(now())
+}
+
+// Enums
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum PostCategory {
+  EMOTIONS
+  DECISIONS
+  SYSTEMS
+  TECHNOLOGY
+  LEADERSHIP
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SPAM
+}
+
+enum ContactType {
+  CONFERENCE
+  CONSULTING
+  COLLABORATION
+  MEDIA
+  OTHER
+}
