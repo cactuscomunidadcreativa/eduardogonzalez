@@ -2,13 +2,13 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useTranslations } from "next-intl";
-import { Send } from "lucide-react";
+import { Send, AlertCircle } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 
 export function ChatDialog({ onClose }: { onClose: () => void }) {
   const t = useTranslations("chat");
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat();
+  const { messages, sendMessage, status, error } = useChat();
   const scrollRef = useRef<HTMLDivElement>(null);
   const isLoading = status === "streaming" || status === "submitted";
 
@@ -31,7 +31,7 @@ export function ChatDialog({ onClose }: { onClose: () => void }) {
         </h3>
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
         {messages.length === 0 && (
           <div className="rounded-lg bg-brand-light p-3 text-sm text-brand-blue">
             {t("greeting")}
@@ -40,7 +40,7 @@ export function ChatDialog({ onClose }: { onClose: () => void }) {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`rounded-lg p-3 text-sm ${
+            className={`rounded-lg p-3 text-sm whitespace-pre-wrap ${
               msg.role === "user"
                 ? "ml-8 bg-brand-orange text-white"
                 : "mr-8 bg-brand-light text-brand-blue"
@@ -53,7 +53,17 @@ export function ChatDialog({ onClose }: { onClose: () => void }) {
         ))}
         {isLoading && messages[messages.length - 1]?.role === "user" && (
           <div className="mr-8 rounded-lg bg-brand-light p-3 text-sm text-brand-blue/50">
-            ...
+            <span className="inline-flex gap-1">
+              <span className="animate-bounce">·</span>
+              <span className="animate-bounce" style={{ animationDelay: "0.1s" }}>·</span>
+              <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>·</span>
+            </span>
+          </div>
+        )}
+        {error && (
+          <div className="mr-8 flex items-start gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+            <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+            <span>Error al conectar con el asistente. Intenta de nuevo.</span>
           </div>
         )}
       </div>
