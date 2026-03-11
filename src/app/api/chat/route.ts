@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { streamText, convertToModelMessages } from "ai";
 import { getAIModel, getSystemPrompt } from "@/lib/ai";
 import { NextResponse } from "next/server";
 
@@ -12,10 +12,13 @@ export async function POST(req: Request) {
       getSystemPrompt(),
     ]);
 
+    // Convert UI messages (from useChat) to model messages (for streamText)
+    const modelMessages = await convertToModelMessages(messages);
+
     const result = streamText({
       model,
       system: systemPrompt,
-      messages,
+      messages: modelMessages,
     });
 
     return result.toUIMessageStreamResponse();
