@@ -114,8 +114,31 @@ export default function BooksPage() {
                   Reencontrándonos
                 </h2>
                 <p className="mt-4 leading-relaxed text-white/60">
-                  Un libro orientado a organizaciones familiares en Latinoamérica. El proyecto integra literatura y música: cada capítulo está acompañado por una pieza musical que forma parte de un disco creado para expandir la experiencia emocional del libro. Explora cómo las familias empresarias pueden reconstruir vínculos, propósito y legado a través de conversaciones emocionales profundas.
+                  Un libro sobre algo que muchas personas viven en silencio: volver a enamorarse y volver a vivir después de los 40. Es una historia de segundas oportunidades, de sanar heridas del pasado, de redescubrir quién eres y de permitirte abrir el corazón nuevamente.
                 </p>
+                <p className="mt-3 leading-relaxed text-white/60">
+                  Cada capítulo tiene su propia canción. La música acompaña la historia y las emociones de cada etapa del camino: el recuerdo, la sanación, el miedo de volver a sentir, y finalmente el valor de amar otra vez.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a
+                    href="https://music.apple.com/us/album/reencontr%C3%A1ndonos/1875832467"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+                  >
+                    <Music size={16} />
+                    Apple Music
+                  </a>
+                  <a
+                    href="https://open.spotify.com/album/0d1A59kNuzEAO8AgQW6czn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+                  >
+                    <Music size={16} />
+                    Spotify
+                  </a>
+                </div>
               </div>
             </div>
           </div>
