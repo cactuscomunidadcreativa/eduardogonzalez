@@ -18,6 +18,7 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Páginas", href: "/admin/pages", icon: FileText },
   { label: "Posts", href: "/admin/posts", icon: FileText },
   { label: "Proyectos", href: "/admin/projects", icon: Folder },
   { label: "Libros", href: "/admin/books", icon: BookOpen },
@@ -35,6 +36,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  // Login page uses its own full-screen layout
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-50">

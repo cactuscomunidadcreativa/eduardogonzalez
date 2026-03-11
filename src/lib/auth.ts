@@ -1,21 +1,38 @@
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import Google from "next-auth/providers/google";
-import { db } from "./db";
+import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(db),
-  providers: [Google],
+  providers: [
+    Credentials({
+      name: "Admin",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const email = credentials?.email as string;
+        const password = credentials?.password as string;
+
+        if (
+          email === process.env.ADMIN_EMAIL &&
+          password === process.env.ADMIN_PASSWORD
+        ) {
+          return {
+            id: "admin",
+            name: "Eduardo González",
+            email,
+          };
+        }
+        return null;
+      },
+    }),
+  ],
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        const dbUser = await db.user.findUnique({
-          where: { email: user.email! },
-          select: { role: true, id: true },
-        });
-        token.role = dbUser?.role ?? "VIEWER";
-        token.id = dbUser?.id;
+        token.role = "ADMIN";
+        token.id = user.id;
       }
       return token;
     },
@@ -30,6 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   pages: {
-    signIn: "/admin",
+    signIn: "/admin/login",
   },
 });
