@@ -27,14 +27,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-blue/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href={`/${locale}`} className="flex items-center gap-2">
           <Image
             src="/images/logos/eg_logo_name_tagline_transparent.png?v=2"
             alt="Eduardo González"
             width={160}
             height={82}
-            className="h-12 w-auto sm:h-14"
+            className="h-14 w-auto sm:h-16"
             unoptimized
           />
         </Link>

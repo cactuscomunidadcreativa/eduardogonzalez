@@ -13,7 +13,7 @@
     "heroTitle": "Eduardo González",
     "heroTagline": "Emotions · Decisions · Human Systems",
     "heroSubtitle": "LATAM Director at Six Seconds. Creator of ROWI. Pioneer of Emotional Budgeting. Emotions are data — and data transforms decisions.",
-    "heroRole": "LATAM Director · Six Seconds | Creator of ROWI | Emotional Budgeting",
+    "heroRole": "Regional Network Director LATAM · Six Seconds | Creator of ROWI | Emotional Budgeting",
     "exploreIdeas": "Explore ideas",
     "viewProjects": "View projects",
     "askAI": "Ask the AI",
@@ -35,6 +35,8 @@
     "newsletterDescription": "Reflections on emotions, decisions, and human systems. Ideas from the intersection of emotional intelligence, technology, and conscious leadership.",
     "newsletterPlaceholder": "you@email.com",
     "newsletterButton": "Subscribe",
+    "newsletterSuccess": "Thanks for subscribing! You'll hear from us soon.",
+    "newsletterError": "Something went wrong. Please try again.",
     "principle": "Organizations have learned to manage money, processes, and technology. But they are still learning to manage something fundamental: emotions."
   },
   "about": {

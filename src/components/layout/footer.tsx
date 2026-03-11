@@ -22,7 +22,7 @@ export function Footer() {
               alt="Eduardo González"
               width={200}
               height={102}
-              className="h-auto w-40 sm:w-48"
+              className="h-auto w-48 sm:w-56"
               unoptimized
             />
             <p className="mt-4 max-w-md text-sm text-white/60">

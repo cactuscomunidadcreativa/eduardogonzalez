@@ -10,6 +10,7 @@ import {
   Quote,
 } from "lucide-react";
 import { AnimatedNodes } from "@/components/brand/animated-nodes";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 export default function HomePage({
   params,
@@ -35,7 +36,7 @@ export default function HomePage({
             alt="Eduardo González — Emotions · Decisions · Human Systems"
             width={501}
             height={256}
-            className="mx-auto mb-6 h-auto w-80 sm:w-96 lg:w-[30rem]"
+            className="mx-auto mb-6 h-auto w-96 sm:w-[28rem] lg:w-[36rem]"
             priority
             unoptimized
           />
@@ -224,19 +225,7 @@ export default function HomePage({
             {t("newsletterTitle")}
           </h2>
           <p className="mt-3 text-white/60">{t("newsletterDescription")}</p>
-          <form className="mt-8 flex gap-2">
-            <input
-              type="email"
-              placeholder={t("newsletterPlaceholder")}
-              className="flex-1 rounded-xl border border-white/20 bg-white/10 px-4 py-3.5 text-sm text-white placeholder-white/40 outline-none transition focus:border-brand-orange focus:ring-1 focus:ring-brand-orange/50"
-            />
-            <button
-              type="submit"
-              className="rounded-xl bg-brand-orange px-6 py-3.5 font-title text-sm font-semibold text-white shadow-lg shadow-brand-orange/25 transition hover:bg-brand-orange/90"
-            >
-              {t("newsletterButton")}
-            </button>
-          </form>
+          <NewsletterForm />
         </div>
       </section>
     </>
