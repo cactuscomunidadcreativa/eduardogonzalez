@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save, Check, Loader2 } from "lucide-react";
+import { Save, Check, Loader2, Key, Eye, EyeOff } from "lucide-react";
 
 export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
@@ -17,6 +17,8 @@ export default function AdminSettingsPage() {
   const [linkedin, setLinkedin] = useState("");
   const [youtube, setYoutube] = useState("");
   const [twitter, setTwitter] = useState("");
+  const [anthropicKey, setAnthropicKey] = useState("");
+  const [showAnthropicKey, setShowAnthropicKey] = useState(false);
 
   useEffect(() => {
     fetch("/api/settings")
@@ -31,6 +33,7 @@ export default function AdminSettingsPage() {
         if (data.linkedin) setLinkedin(data.linkedin);
         if (data.youtube) setYoutube(data.youtube);
         if (data.twitter) setTwitter(data.twitter);
+        if (data.anthropicKey) setAnthropicKey(data.anthropicKey);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -46,7 +49,7 @@ export default function AdminSettingsPage() {
         body: JSON.stringify({
           siteName, siteDescription, contactEmail,
           seoTitle, seoDescription,
-          instagram, linkedin, youtube, twitter,
+          instagram, linkedin, youtube, twitter, anthropicKey,
         }),
       });
       setSaved(true);
@@ -167,6 +170,41 @@ export default function AdminSettingsPage() {
                 placeholder="https://x.com/eduardogonzalez"
                 className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* API Keys */}
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Key size={16} className="text-brand-orange" />
+            <h3 className="text-sm font-semibold text-gray-700">API Keys</h3>
+          </div>
+          <p className="mb-4 text-xs text-gray-400">
+            Las API keys se usan para el chat IA y las traducciones automáticas. Se almacenan de forma segura.
+          </p>
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1 block text-sm text-gray-500">Anthropic API Key (Claude)</label>
+              <div className="relative">
+                <input
+                  type={showAnthropicKey ? "text" : "password"}
+                  value={anthropicKey}
+                  onChange={(e) => setAnthropicKey(e.target.value)}
+                  placeholder="sk-ant-..."
+                  className="w-full rounded-lg border border-gray-200 px-4 py-2 pr-10 font-mono text-sm outline-none focus:border-brand-orange"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAnthropicKey(!showAnthropicKey)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showAnthropicKey ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              <p className="mt-1 text-xs text-gray-400">
+                Usada para el bot &quot;Pregúntale a Eduardo&quot; y las traducciones automáticas ES/EN/PT
+              </p>
             </div>
           </div>
         </div>

@@ -3,6 +3,17 @@ import { db } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
+  const admin = searchParams.get("admin") === "true";
+
+  // Admin mode: return all posts with all translations (no status filter)
+  if (admin) {
+    const posts = await db.post.findMany({
+      include: { translations: true, tags: true },
+      orderBy: { updatedAt: "desc" },
+    });
+    return NextResponse.json(posts);
+  }
+
   const locale = searchParams.get("locale") || "es";
   const category = searchParams.get("category");
   const page = parseInt(searchParams.get("page") || "1");

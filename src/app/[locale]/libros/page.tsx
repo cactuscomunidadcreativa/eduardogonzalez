@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { Clock, Music } from "lucide-react";
+import { Clock, Music, ShoppingCart } from "lucide-react";
 import { AnimatedNodes } from "@/components/brand/animated-nodes";
 import Image from "next/image";
 
@@ -76,6 +76,17 @@ export default function BooksPage() {
                 <p className="mt-4 leading-relaxed text-white/60">
                   Redención es un libro sobre el poder transformador de las emociones. Explora cómo nuestras emociones pueden redefinir nuestra vida, nuestras relaciones y nuestras decisiones cuando aprendemos a comprenderlas y utilizarlas conscientemente.
                 </p>
+                <div className="mt-6 flex items-center gap-4">
+                  <span className="text-3xl font-bold text-brand-orange">$12 USD</span>
+                  <span className="text-sm text-white/40">+ envío</span>
+                </div>
+                <a
+                  href="mailto:eduardo@cactuscomunidadcreativa.com?subject=Pedido%20Redención&body=Hola%20Eduardo,%20me%20gustaría%20pedir%20el%20libro%20Redención."
+                  className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-orange px-6 py-3 text-sm font-bold text-white shadow-lg shadow-brand-orange/30 transition hover:bg-brand-orange/90 hover:shadow-xl"
+                >
+                  <ShoppingCart size={18} />
+                  Pedir ahora
+                </a>
               </div>
             </div>
           </div>
@@ -87,21 +98,17 @@ export default function BooksPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand-blue to-brand-blue/90 shadow-2xl">
             <div className="grid items-center md:grid-cols-5">
-              {/* Book visual */}
-              <div className="flex items-center justify-center bg-gradient-to-br from-brand-green/20 to-brand-green/10 p-12 md:col-span-2">
+              {/* Book cover */}
+              <div className="flex items-center justify-center bg-gradient-to-br from-brand-green/20 to-brand-green/10 p-8 sm:p-12 md:col-span-2">
                 <div className="relative">
-                  {/* Book shape */}
-                  <div className="flex h-72 w-48 flex-col items-center justify-center rounded-r-lg rounded-l-sm bg-gradient-to-br from-brand-green to-brand-green/80 p-6 shadow-2xl shadow-brand-green/30">
-                    <Music className="mb-4 text-white/80" size={40} />
-                    <span className="text-center font-title text-xl font-bold text-white">
-                      Reencontrándonos
-                    </span>
-                    <span className="mt-2 text-xs text-white/60">
-                      Eduardo González
-                    </span>
-                  </div>
-                  {/* Book spine shadow */}
-                  <div className="absolute left-0 top-0 h-full w-1 rounded-l-sm bg-brand-green/60" />
+                  <div className="absolute -inset-3 rounded-xl bg-brand-green/20 blur-xl" />
+                  <Image
+                    src="/images/books/reencontrandonos.jpg"
+                    alt="Reencontrándonos — Porque el amor... también madura..."
+                    width={240}
+                    height={240}
+                    className="relative h-auto w-48 rounded-lg shadow-2xl sm:w-56"
+                  />
                 </div>
               </div>
 

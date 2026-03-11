@@ -3,10 +3,11 @@ import { db } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   const locale = req.nextUrl.searchParams.get("locale") || "es";
+  const all = req.nextUrl.searchParams.get("all") === "true";
 
   const projects = await db.project.findMany({
-    where: { status: "PUBLISHED" },
-    include: { translations: { where: { locale } }, tags: true },
+    where: all ? {} : { status: "PUBLISHED" },
+    include: { translations: all ? true : { where: { locale } }, tags: true },
     orderBy: { sortOrder: "asc" },
   });
 
