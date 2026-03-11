@@ -8,9 +8,9 @@ export default function AdminMediaPage() {
       </h1>
       <div className="rounded-xl border-2 border-dashed border-gray-300 bg-white p-12 text-center">
         <Upload size={48} className="mx-auto mb-4 text-gray-300" />
-        <p className="text-gray-500">Arrastra archivos aqu\u00ed o haz click para subir</p>
+        <p className="text-gray-500">Arrastra archivos aquí o haz click para subir</p>
         <p className="mt-2 text-sm text-gray-400">
-          Galer\u00eda de im\u00e1genes y archivos del sitio.
+          Galería de imágenes y archivos del sitio.
         </p>
       </div>
     </div>

@@ -57,11 +57,11 @@ export default function NewPostPage() {
           <div className="rounded-xl border border-gray-200 bg-white p-6">
             <div className="mb-4">
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                T\u00edtulo ({activeLocale.toUpperCase()})
+                Título ({activeLocale.toUpperCase()})
               </label>
               <input
                 className="w-full rounded-lg border border-gray-200 px-4 py-3 text-lg font-title font-bold outline-none focus:border-brand-orange"
-                placeholder="T\u00edtulo del art\u00edculo..."
+                placeholder="Título del artículo..."
               />
             </div>
             <div className="mb-4">
@@ -71,7 +71,7 @@ export default function NewPostPage() {
               <textarea
                 rows={2}
                 className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm outline-none focus:border-brand-orange"
-                placeholder="Breve descripci\u00f3n..."
+                placeholder="Breve descripción..."
               />
             </div>
             <div>
@@ -80,12 +80,12 @@ export default function NewPostPage() {
               </label>
               <div className="min-h-[400px] rounded-lg border border-gray-200 p-4">
                 <p className="text-gray-400">
-                  Editor TipTap se integrar\u00e1 aqu\u00ed. Por ahora usa el textarea.
+                  Editor TipTap se integrará aquí. Por ahora usa el textarea.
                 </p>
                 <textarea
                   rows={15}
                   className="mt-2 w-full border-0 outline-none"
-                  placeholder="Escribe tu art\u00edculo aqu\u00ed..."
+                  placeholder="Escribe tu artículo aquí..."
                 />
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function NewPostPage() {
           {/* Status */}
           <div className="rounded-xl border border-gray-200 bg-white p-6">
             <h3 className="mb-4 text-sm font-semibold text-gray-700">
-              Publicaci\u00f3n
+              Publicación
             </h3>
             <select className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none">
               <option value="DRAFT">Borrador</option>
@@ -108,7 +108,7 @@ export default function NewPostPage() {
           {/* Category */}
           <div className="rounded-xl border border-gray-200 bg-white p-6">
             <h3 className="mb-4 text-sm font-semibold text-gray-700">
-              Categor\u00eda
+              Categoría
             </h3>
             <select className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none">
               {categories.map((cat) => (
@@ -134,12 +134,12 @@ export default function NewPostPage() {
             <div className="space-y-3">
               <input
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none"
-                placeholder="Meta t\u00edtulo"
+                placeholder="Meta título"
               />
               <textarea
                 rows={2}
                 className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none"
-                placeholder="Meta descripci\u00f3n"
+                placeholder="Meta descripción"
               />
             </div>
           </div>

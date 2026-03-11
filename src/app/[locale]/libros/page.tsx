@@ -1,30 +1,27 @@
 import { useTranslations } from "next-intl";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Clock, Music, Sparkles } from "lucide-react";
+import { AnimatedNodes } from "@/components/brand/animated-nodes";
 
-const books = [
-  {
-    slug: "redencion",
-    title: "Redenci\u00f3n",
-    status: "published",
-    year: 2019,
-  },
+const upcomingBooks = [
   {
     slug: "emotional-budgeting",
     title: "Emotional Budgeting",
-    status: "coming",
-    year: null,
+    desc: "Cómo las organizaciones pueden gestionar sus recursos emocionales con la misma intención estratégica que sus recursos financieros.",
   },
   {
     slug: "human-systems",
     title: "Human Systems",
-    status: "coming",
-    year: null,
+    desc: "Una exploración de cómo las emociones, las decisiones y las estructuras se entrelazan para crear los sistemas en los que vivimos.",
   },
   {
-    slug: "emotions-and-decisions",
-    title: "Emotions and Decisions",
-    status: "coming",
-    year: null,
+    slug: "emotions-and-decision-making",
+    title: "Emotions & Decision Making",
+    desc: "La ciencia detrás de cómo las emociones moldean cada decisión que tomamos — y cómo usar eso a nuestro favor.",
+  },
+  {
+    slug: "leadership-emotional-infrastructure",
+    title: "Leadership & Emotional Infrastructure",
+    desc: "Construir la infraestructura emocional que necesita un líder para transformar equipos y organizaciones.",
   },
 ];
 
@@ -33,38 +30,133 @@ export default function BooksPage() {
 
   return (
     <>
-      <section className="bg-brand-light py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <h1 className="font-title text-4xl font-bold text-brand-blue sm:text-5xl">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-brand-blue py-24 sm:py-28">
+        <div className="absolute inset-0">
+          <AnimatedNodes nodeCount={20} interactive={true} className="h-full w-full" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <h1 className="font-title text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             {t("title")}
           </h1>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/60">
+            {t("subtitle")}
+          </p>
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="grid gap-8 sm:grid-cols-2">
-            {books.map((book) => (
+      {/* Featured Book: Redención */}
+      <section className="py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand-blue to-brand-blue/90 shadow-2xl">
+            <div className="grid items-center md:grid-cols-5">
+              {/* Book visual */}
+              <div className="flex items-center justify-center bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 p-12 md:col-span-2">
+                <div className="relative">
+                  {/* Book shape */}
+                  <div className="flex h-72 w-48 flex-col items-center justify-center rounded-r-lg rounded-l-sm bg-gradient-to-br from-brand-orange to-brand-orange/80 p-6 shadow-2xl shadow-brand-orange/30">
+                    <BookOpen className="mb-4 text-white/80" size={40} />
+                    <span className="text-center font-title text-2xl font-bold text-white">
+                      Redención
+                    </span>
+                    <span className="mt-2 text-xs text-white/60">
+                      Eduardo González
+                    </span>
+                  </div>
+                  {/* Book spine shadow */}
+                  <div className="absolute left-0 top-0 h-full w-1 rounded-l-sm bg-brand-orange/60" />
+                </div>
+              </div>
+
+              {/* Book info */}
+              <div className="p-8 sm:p-12 md:col-span-3">
+                <span className="inline-block rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold text-brand-green">
+                  {t("published")} · 2019
+                </span>
+                <h2 className="mt-4 font-title text-3xl font-bold text-white sm:text-4xl">
+                  Redención
+                </h2>
+                <p className="mt-4 leading-relaxed text-white/60">
+                  Redención es un libro sobre el poder transformador de las emociones. Explora cómo nuestras emociones pueden redefinir nuestra vida, nuestras relaciones y nuestras decisiones cuando aprendemos a comprenderlas y utilizarlas conscientemente.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* In Development: Reencontrándonos */}
+      <section className="bg-brand-light py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand-blue to-brand-blue/90 shadow-2xl">
+            <div className="grid items-center md:grid-cols-5">
+              {/* Book visual */}
+              <div className="flex items-center justify-center bg-gradient-to-br from-brand-green/20 to-brand-green/10 p-12 md:col-span-2">
+                <div className="relative">
+                  {/* Book shape */}
+                  <div className="flex h-72 w-48 flex-col items-center justify-center rounded-r-lg rounded-l-sm bg-gradient-to-br from-brand-green to-brand-green/80 p-6 shadow-2xl shadow-brand-green/30">
+                    <Music className="mb-4 text-white/80" size={40} />
+                    <span className="text-center font-title text-xl font-bold text-white">
+                      Reencontrándonos
+                    </span>
+                    <span className="mt-2 text-xs text-white/60">
+                      Eduardo González
+                    </span>
+                  </div>
+                  {/* Book spine shadow */}
+                  <div className="absolute left-0 top-0 h-full w-1 rounded-l-sm bg-brand-green/60" />
+                </div>
+              </div>
+
+              {/* Book info */}
+              <div className="p-8 sm:p-12 md:col-span-3">
+                <span className="inline-block rounded-full bg-brand-orange/20 px-3 py-1 text-xs font-bold text-brand-orange">
+                  {t("comingSoon")}
+                </span>
+                <h2 className="mt-4 font-title text-3xl font-bold text-white sm:text-4xl">
+                  Reencontrándonos
+                </h2>
+                <p className="mt-4 leading-relaxed text-white/60">
+                  Un libro orientado a organizaciones familiares en Latinoamérica. El proyecto integra literatura y música: cada capítulo está acompañado por una pieza musical que forma parte de un disco creado para expandir la experiencia emocional del libro. Explora cómo las familias empresarias pueden reconstruir vínculos, propósito y legado a través de conversaciones emocionales profundas.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Books */}
+      <section className="py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="mb-12 text-center">
+            <h2 className="font-title text-3xl font-bold text-brand-blue">
+              {t("upcomingTitle")}
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-brand-blue/60">
+              {t("upcomingSubtitle")}
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            {upcomingBooks.map((book) => (
               <div
                 key={book.slug}
-                className="rounded-2xl border border-brand-light bg-white p-8 transition hover:shadow-lg"
+                className="group rounded-2xl bg-white p-8 shadow-sm transition hover:shadow-lg"
               >
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-brand-blue text-white">
-                  <BookOpen size={28} />
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue/5 text-brand-blue">
+                    <Clock size={20} />
+                  </div>
+                  <span className="rounded-full bg-brand-orange/10 px-3 py-1 text-xs font-medium text-brand-orange">
+                    {t("comingSoon")}
+                  </span>
                 </div>
                 <h3 className="font-title text-xl font-bold text-brand-blue">
                   {book.title}
                 </h3>
-                {book.year && (
-                  <span className="mt-2 inline-block text-sm text-brand-gray">
-                    {book.year}
-                  </span>
-                )}
-                {book.status === "coming" && (
-                  <span className="mt-2 inline-block rounded-full bg-brand-orange/10 px-3 py-1 text-xs font-medium text-brand-orange">
-                    {t("comingSoon")}
-                  </span>
-                )}
+                <p className="mt-3 text-sm leading-relaxed text-brand-blue/60">
+                  {book.desc}
+                </p>
               </div>
             ))}
           </div>

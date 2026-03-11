@@ -40,7 +40,7 @@ export default function IdeasPage() {
           <div className="py-20 text-center">
             <p className="text-lg text-brand-blue/50">{t("noArticles")}</p>
             <p className="mt-2 text-sm text-brand-gray">
-              Los art\u00edculos se publican desde el panel de administraci\u00f3n.
+              Los artículos se publican desde el panel de administración.
             </p>
           </div>
         </div>

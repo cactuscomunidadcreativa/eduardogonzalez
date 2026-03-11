@@ -17,7 +17,7 @@ export default function AdminProjectsPage() {
         </Link>
       </div>
       <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-        <p className="text-gray-500">No hay proyectos a\u00fan.</p>
+        <p className="text-gray-500">No hay proyectos aún.</p>
       </div>
     </div>
   );

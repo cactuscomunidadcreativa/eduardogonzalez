@@ -18,9 +18,9 @@ export default function AdminPostsPage() {
       </div>
 
       <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-        <p className="text-gray-500">No hay posts a\u00fan.</p>
+        <p className="text-gray-500">No hay posts aún.</p>
         <p className="mt-2 text-sm text-gray-400">
-          Conecta la base de datos y crea tu primer art\u00edculo.
+          Conecta la base de datos y crea tu primer artículo.
         </p>
       </div>
     </div>

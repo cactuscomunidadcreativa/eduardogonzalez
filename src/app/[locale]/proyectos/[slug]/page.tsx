@@ -20,7 +20,7 @@ export default async function ProjectDetailPage({
         {slug.replace(/-/g, " ")}
       </h1>
       <div className="mt-8 prose prose-lg max-w-none text-brand-blue/70">
-        <p>Contenido del proyecto pr\u00f3ximamente. Este proyecto ser\u00e1 gestionado desde el panel de administraci\u00f3n.</p>
+        <p>Contenido del proyecto próximamente. Este proyecto será gestionado desde el panel de administración.</p>
       </div>
     </div>
   );

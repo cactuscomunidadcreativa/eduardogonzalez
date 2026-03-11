@@ -1,5 +1,5 @@
-export const SITE_NAME = "Eduardo Gonz\u00e1lez";
-export const SITE_TAGLINE = "Emotions \u00b7 Decisions \u00b7 Systems";
+export const SITE_NAME = "Eduardo González";
+export const SITE_TAGLINE = "Emotions · Decisions · Systems";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://eduardogonzalez.coach";
 
 export const NAV_ITEMS = [

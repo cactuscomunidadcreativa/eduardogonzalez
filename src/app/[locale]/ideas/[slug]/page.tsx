@@ -20,7 +20,7 @@ export default async function ArticlePage({
         {slug.replace(/-/g, " ")}
       </h1>
       <div className="mt-8 prose prose-lg max-w-none text-brand-blue/70">
-        <p>Este art\u00edculo se cargar\u00e1 din\u00e1micamente desde la base de datos.</p>
+        <p>Este artículo se cargará dinámicamente desde la base de datos.</p>
       </div>
     </article>
   );

@@ -5,7 +5,7 @@ export default function AdminBooksPage() {
         Libros
       </h1>
       <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
-        <p className="text-gray-500">Gestiona los libros desde aqu\u00ed.</p>
+        <p className="text-gray-500">Gestiona los libros desde aquí.</p>
       </div>
     </div>
   );

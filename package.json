@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate --no-hints && next build",
+    "postinstall": "prisma generate --no-hints",
     "start": "next start",
     "lint": "eslint"
   },
@@ -24,6 +25,7 @@
     "@tiptap/starter-kit": "^3.20.1",
     "ai": "^6.0.116",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.3.1",
     "framer-motion": "^12.35.2",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",

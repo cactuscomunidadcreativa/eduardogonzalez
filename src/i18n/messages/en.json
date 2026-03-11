@@ -10,29 +10,68 @@
     "contact": "Contact"
   },
   "home": {
-    "heroTitle": "Eduardo Gonz\u00e1lez",
-    "heroTagline": "Emotions \u00b7 Decisions \u00b7 Systems",
-    "heroSubtitle": "I explore how emotions influence decisions, leadership, and human systems.",
+    "heroTitle": "Eduardo González",
+    "heroTagline": "Emotions · Decisions · Human Systems",
+    "heroSubtitle": "LATAM Director at Six Seconds. Creator of ROWI. Pioneer of Emotional Budgeting. Emotions are data — and data transforms decisions.",
+    "heroRole": "LATAM Director · Six Seconds | Creator of ROWI | Emotional Budgeting",
     "exploreIdeas": "Explore ideas",
     "viewProjects": "View projects",
     "askAI": "Ask the AI",
+    "conceptTitle": "The concept",
+    "conceptText": "Organizations manage money, processes, technology. But they rarely manage emotions. That's the space where I work: at the intersection between what we feel, what we decide, and the systems we build.",
+    "pillarsTitle": "Three forces, one system",
+    "pillarEmotionsTitle": "Emotions",
+    "pillarEmotionsDesc": "Measure, understand, and manage the emotional information that guides every human decision.",
+    "pillarDecisionsTitle": "Decisions",
+    "pillarDecisionsDesc": "Transform emotional data into more conscious decisions, both individual and organizational.",
+    "pillarSystemsTitle": "Human Systems",
+    "pillarSystemsDesc": "Design organizations where technology, emotions, and data work together.",
     "featuredProjects": "Featured Projects",
     "latestIdeas": "Latest Ideas",
     "viewAll": "View all",
-    "newsletterTitle": "Stay connected",
-    "newsletterDescription": "Receive ideas about emotions, decisions, and human systems.",
+    "quoteText": "Emotions are not the problem. The problem is not knowing what to do with them.",
+    "quoteAuthor": "Eduardo González",
+    "newsletterTitle": "Join the conversation",
+    "newsletterDescription": "Reflections on emotions, decisions, and human systems. Ideas from the intersection of emotional intelligence, technology, and conscious leadership.",
     "newsletterPlaceholder": "you@email.com",
     "newsletterButton": "Subscribe",
     "principle": "Organizations have learned to manage money, processes, and technology. But they are still learning to manage something fundamental: emotions."
   },
   "about": {
     "title": "About",
+    "introText": "I explore the intersection between emotions, decisions, and human systems. My work connects emotional intelligence, technology, and leadership to transform how people and organizations understand the emotions behind every decision. I am currently Regional Director for Latin America at Six Seconds.",
     "storyTitle": "My Story",
+    "storyP1": "My story began in law. I worked on legal proceedings linked to the first civil reparations case between Peru and the United States, defending the rights of Peruvian families. That experience helped me understand how formal justice systems work, but it also left me with a deep question: Why are human decisions so influenced by emotions we almost never understand?",
+    "storyP2": "After that chapter came photography. Photography completely changed the way I see the world. It taught me that reality depends on the angle from which you observe it. The same situation can have multiple interpretations depending on perspective.",
+    "storyP3": "Later I worked in marketing, communications, and business management, holding leadership roles in different organizations. I also launched my own business ventures: some worked, others failed. But each experience brought me closer to understanding how human decisions work within complex systems. In 2013, I began my formal training in Ontological Coaching at Newfield Network.",
+    "storyP4": "That search led me to Six Seconds, where I found the scientific foundation I had been looking for: a model that connects neuroscience, emotional intelligence, and human performance. Since then, I have accompanied thousands of professionals and young people in personal development and leadership processes across Latin America.",
     "timelineTitle": "Trajectory",
+    "timeline": {
+      "t1Year": "2025",
+      "t1Role": "Regional Director for Latin America — Six Seconds",
+      "t1Desc": "Proposal of the Emotional Budgeting model. Leading the emotional intelligence strategy for the entire LATAM region.",
+      "t2Year": "2023",
+      "t2Role": "Development of ROWIIA",
+      "t2Desc": "Emotional intelligence and AI ecosystem connecting emotions, data, and decisions for people and organizations.",
+      "t3Year": "2020",
+      "t3Role": "Start of ROWI development",
+      "t3Desc": "Application to record emotions, identify patterns, and improve personal decision-making.",
+      "t4Year": "2019",
+      "t4Role": "Author of Redemption + EQ Ambassador — Six Seconds",
+      "t4Desc": "Publication of the book Redemption and recognition as EQ Ambassador in the global emotional intelligence network.",
+      "t5Year": "2018",
+      "t5Role": "Founded Cactus Creative Community",
+      "t5Desc": "Systems lab, technology, digital platforms, AI, automation, and analytics."
+    },
     "visionTitle": "Vision",
+    "visionText": "I believe in a world where organizations don't just manage results. But understand the emotions that produce those results. A world where technology amplifies our capacity to be more human, not less.",
+    "nobleGoalTitle": "Noble Goal",
+    "nobleGoalText": "To support people in achieving their transformation through my own transformation.",
+    "approachTitle": "My approach",
+    "approachText": "I don't separate the emotional from the rational, nor technology from the human. My work integrates emotional science (Six Seconds, KCG model), technological innovation (ROWI, AI), and organizational systems design. The result: solutions that connect what we feel with what we build.",
     "exploringTitle": "What I'm exploring",
     "roles": {
-      "sixSeconds": "LATAM Director \u2013 Six Seconds",
+      "sixSeconds": "LATAM Director – Six Seconds",
       "rowi": "Creator of ROWIIA",
       "budgeting": "Developer of Emotional Budgeting",
       "cactus": "Founder of Cactus Creative Community",
@@ -41,18 +80,27 @@
   },
   "whatIDo": {
     "title": "What I Do",
+    "subtitle": "Four pillars connecting emotions, decisions, technology, and human systems.",
     "pillar1Title": "Applied Emotional Intelligence",
-    "pillar1Desc": "I work with organizations to develop leadership and culture based on emotional intelligence.",
+    "pillar1Desc": "As LATAM Director at Six Seconds, I work with the KCG model (Know Yourself, Choose Yourself, Give Yourself) to develop emotionally intelligent leaders. I implement emotional measurement with certified tools, design leadership development programs, and transform organizational cultures.",
+    "pillar1Tags": "Six Seconds, KCG Model, Emotional measurement, Leadership, EQ Certifications",
     "pillar2Title": "Emotional Budgeting",
-    "pillar2Desc": "An organizational model that proposes managing emotional resources like energy, trust, attention, and commitment.",
+    "pillar2Desc": "A proprietary organizational model that proposes managing emotions the way financial resources are managed. We measure and optimize five key emotional resources: energy, attention, trust, commitment, and burnout. Because what isn't measured, isn't managed.",
+    "pillar2Tags": "Energy, Attention, Trust, Commitment, Burnout",
     "pillar3Title": "Emotional Technology",
-    "pillar3Desc": "ROWI and ROWIIA. Technology that helps understand emotional patterns and decisions.",
+    "pillar3Desc": "ROWI is the app for recording emotions, discovering patterns, and improving decisions. ROWIIA is the AI-powered ecosystem connecting emotional data with advanced analytics. Together they form a platform that translates emotions into actionable information.",
+    "pillar3Tags": "ROWI App, ROWIIA, Artificial Intelligence, Emotional patterns, Analytics",
     "pillar4Title": "Human Systems",
-    "pillar4Desc": "Exploring how emotions, decisions, and structures create organizational systems."
+    "pillar4Desc": "From Cactus Creative Community, we build digital platforms, AI solutions, automation, and analytics for organizations. The lab where ideas become systems that work — combining technology with human understanding.",
+    "pillar4Tags": "Cactus Lab, Digital platforms, AI, Automation, Analytics",
+    "ctaTitle": "Want to explore how to integrate these pillars into your organization?",
+    "ctaButton": "Let's talk"
   },
   "projects": {
     "title": "Projects",
-    "viewProject": "View project"
+    "subtitle": "Each project is a bridge between emotions, technology, and human systems.",
+    "viewProject": "View project",
+    "learnMore": "Learn more"
   },
   "ideas": {
     "title": "Ideas",
@@ -65,38 +113,42 @@
     "technology": "Technology",
     "leadership": "Leadership",
     "comments": "Comments",
-    "writeComment": "Write a comment...",
+    "writeComment": "Share your reflection...",
     "submitComment": "Submit",
     "commentPending": "Your comment is pending approval.",
-    "noArticles": "No articles in this category yet."
+    "noArticles": "No articles in this category yet. New ideas coming soon."
   },
   "books": {
     "title": "Books",
+    "subtitle": "Ideas that become pages. Each book explores a different dimension of human emotions.",
     "buyNow": "Buy now",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "published": "Published",
+    "upcomingTitle": "Upcoming books",
+    "upcomingSubtitle": "Ideas in development that will become the next books."
   },
   "lab": {
     "title": "Lab",
     "subtitle": "Experimental space",
-    "description": "Models, diagrams, explorations, and visual ideas."
+    "description": "Models, diagrams, prototypes, and visual explorations. A lab where ideas about emotions, decisions, and human systems take shape before becoming projects."
   },
   "contact": {
     "title": "Contact",
     "name": "Name",
     "email": "Email",
     "type": "Inquiry type",
-    "conference": "Conference",
-    "consulting": "Consulting",
-    "collaboration": "Collaboration",
-    "media": "Media",
+    "conference": "Conference or talk",
+    "consulting": "Organizational consulting",
+    "collaboration": "Collaboration or partnership",
+    "media": "Media and press",
     "message": "Message",
     "send": "Send message",
-    "success": "Message sent. I'll get back to you soon."
+    "success": "Message sent successfully. I'll get back to you as soon as possible."
   },
   "chat": {
     "button": "Ask Eduardo",
-    "placeholder": "Type your question...",
-    "greeting": "Hi! I'm Eduardo's assistant. I can answer about emotions, decisions, and human systems. How can I help you?"
+    "placeholder": "Type your question about emotions, leadership, or human systems...",
+    "greeting": "Hi! I'm Eduardo González's assistant. I can help with questions about emotional intelligence, Emotional Budgeting, human systems, conscious leadership, and Eduardo's projects like ROWI, Cactus, and Oveja Libre. What would you like to explore?"
   },
   "common": {
     "loading": "Loading...",
@@ -107,6 +159,6 @@
   },
   "footer": {
     "rights": "All rights reserved.",
-    "tagline": "Emotions \u00b7 Decisions \u00b7 Systems"
+    "tagline": "Emotions · Decisions · Human Systems"
   }
 }

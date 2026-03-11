@@ -31,13 +31,13 @@ export function Header() {
         <Link href={`/${locale}`} className="flex items-center gap-2">
           <Image
             src="/images/logos/eg_logo_transparent.png"
-            alt="Eduardo Gonz\u00e1lez"
+            alt="Eduardo González"
             width={40}
             height={40}
             className="h-10 w-10"
           />
           <span className="hidden font-title text-lg font-bold text-brand-blue sm:inline">
-            Eduardo Gonz\u00e1lez
+            Eduardo González
           </span>
         </Link>
 

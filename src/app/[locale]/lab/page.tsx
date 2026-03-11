@@ -20,7 +20,7 @@ export default function LabPage() {
           <FlaskConical size={48} className="mx-auto mb-6 text-brand-gray" />
           <p className="text-lg text-brand-blue/70">{t("description")}</p>
           <p className="mt-4 text-sm text-brand-gray">
-            Experimentos y modelos visuales pr\u00f3ximamente.
+            Experimentos y modelos visuales próximamente.
           </p>
         </div>
       </section>

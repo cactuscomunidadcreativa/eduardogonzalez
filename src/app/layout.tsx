@@ -14,11 +14,11 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   title: {
-    default: "Eduardo Gonz\u00e1lez | Emotions \u00b7 Decisions \u00b7 Systems",
-    template: "%s | Eduardo Gonz\u00e1lez",
+    default: "Eduardo González | Emotions · Decisions · Systems",
+    template: "%s | Eduardo González",
   },
   description:
-    "Exploro c\u00f3mo las emociones influyen en decisiones, liderazgo y sistemas humanos.",
+    "Exploro cómo las emociones influyen en decisiones, liderazgo y sistemas humanos.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://eduardogonzalez.coach"
   ),

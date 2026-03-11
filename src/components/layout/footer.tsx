@@ -20,14 +20,14 @@ export function Footer() {
             <div className="flex items-center gap-3">
               <Image
                 src="/images/logos/eg_logo_white.png"
-                alt="Eduardo Gonz\u00e1lez"
+                alt="Eduardo González"
                 width={48}
                 height={48}
                 className="h-12 w-12"
               />
               <div>
                 <h3 className="font-title text-lg font-bold">
-                  Eduardo Gonz\u00e1lez
+                  Eduardo González
                 </h3>
                 <p className="text-sm text-brand-gray">{t("tagline")}</p>
               </div>
@@ -92,7 +92,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-white/40">
-          &copy; {new Date().getFullYear()} Eduardo Gonz\u00e1lez. {t("rights")}
+          &copy; {new Date().getFullYear()} Eduardo González. {t("rights")}
         </div>
       </div>
     </footer>
