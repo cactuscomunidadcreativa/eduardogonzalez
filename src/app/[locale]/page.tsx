@@ -25,26 +25,22 @@ export default function HomePage({
       <section className="relative overflow-hidden bg-brand-blue py-28 sm:py-40">
         {/* Animated node network background */}
         <div className="absolute inset-0">
-          <AnimatedNodes nodeCount={30} interactive={true} className="h-full w-full" />
+          <AnimatedNodes nodeCount={50} interactive={true} className="h-full w-full" />
         </div>
 
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          {/* Logo grande sobre la animación */}
+          {/* Logo con nombre y tagline sobre la animación */}
           <Image
-            src="/images/logos/eg_logo_white.png"
-            alt="Eduardo González"
-            width={180}
-            height={180}
-            className="mx-auto mb-10 h-32 w-32 drop-shadow-2xl sm:h-44 sm:w-44"
+            src="/images/logos/eg_logo_name_tagline_transparent.png?v=2"
+            alt="Eduardo González — Emotions · Decisions · Human Systems"
+            width={501}
+            height={256}
+            className="mx-auto mb-6 h-auto w-64 sm:w-80 lg:w-[24rem]"
             priority
+            unoptimized
           />
-          <h1 className="font-title text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
-            {t("heroTitle")}
-          </h1>
-          <p className="mt-4 font-title text-lg tracking-widest text-brand-orange sm:text-xl">
-            {t("heroTagline")}
-          </p>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-white/50">
+          <h1 className="sr-only">{t("heroTitle")} — {t("heroTagline")}</h1>
+          <p className="mx-auto max-w-xl text-sm text-white/50">
             {t("heroRole")}
           </p>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/70">

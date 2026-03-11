@@ -26,19 +26,17 @@ export function Header() {
   const locale = pathname.split("/")[1] || "es";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-light bg-white/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-blue/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href={`/${locale}`} className="flex items-center gap-2">
           <Image
-            src="/images/logos/eg_logo_transparent.png"
+            src="/images/logos/eg_logo_name_tagline_transparent.png?v=2"
             alt="Eduardo González"
-            width={40}
-            height={40}
-            className="h-10 w-10"
+            width={160}
+            height={82}
+            className="h-10 w-auto sm:h-12"
+            unoptimized
           />
-          <span className="hidden font-title text-lg font-bold text-brand-blue sm:inline">
-            Eduardo González
-          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -52,8 +50,8 @@ export function Header() {
                 href={fullHref}
                 className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-brand-light text-brand-orange"
-                    : "text-brand-blue/70 hover:bg-brand-light hover:text-brand-blue"
+                    ? "bg-white/10 text-brand-orange"
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {t(key)}
@@ -67,7 +65,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-2 text-brand-blue md:hidden"
+            className="rounded-lg p-2 text-white md:hidden"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -76,7 +74,7 @@ export function Header() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="border-t border-brand-light bg-white px-4 py-4 md:hidden">
+        <nav className="border-t border-white/10 bg-brand-blue px-4 py-4 md:hidden">
           {navKeys.map(({ key, href }) => {
             const fullHref = `/${locale}${href}`;
             const isActive = pathname.startsWith(fullHref);
@@ -87,8 +85,8 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
                 className={`block rounded-lg px-4 py-3 text-sm font-medium ${
                   isActive
-                    ? "bg-brand-light text-brand-orange"
-                    : "text-brand-blue/70"
+                    ? "bg-white/10 text-brand-orange"
+                    : "text-white/70"
                 }`}
               >
                 {t(key)}

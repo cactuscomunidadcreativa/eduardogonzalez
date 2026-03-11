@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import {
   Scale,
   Camera,
@@ -34,27 +35,47 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-brand-blue py-28 sm:py-36">
+      <section className="relative overflow-hidden bg-brand-blue py-20 sm:py-28">
         {/* Animated node network background */}
         <div className="absolute inset-0">
           <AnimatedNodes
-            nodeCount={24}
+            nodeCount={30}
             interactive={true}
             className="h-full w-full"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/40 via-transparent to-brand-blue/60" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur-sm">
-            <span className="h-2 w-2 rounded-full bg-brand-green animate-pulse" />
-            Director Regional LATAM — Six Seconds
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/30 via-transparent to-brand-blue/50" />
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
+            {/* Photo */}
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-brand-orange/30 via-brand-green/20 to-brand-blue/30 blur-lg" />
+                <Image
+                  src="/images/eduardo-gonzalez.png"
+                  alt="Eduardo González"
+                  width={280}
+                  height={350}
+                  className="relative h-56 w-44 rounded-2xl object-cover shadow-2xl sm:h-72 sm:w-56 md:h-80 md:w-64"
+                  priority
+                />
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="text-center md:text-left">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur-sm">
+                <span className="h-2 w-2 rounded-full bg-brand-green animate-pulse" />
+                Director Regional LATAM — Six Seconds
+              </div>
+              <h1 className="font-title text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                {t("title")}
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 sm:text-xl">
+                {t("introText")}
+              </p>
+            </div>
           </div>
-          <h1 className="font-title text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            {t("title")}
-          </h1>
-          <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/70 sm:text-xl">
-            {t("introText")}
-          </p>
         </div>
       </section>
 

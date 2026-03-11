@@ -39,7 +39,7 @@ export function LocaleSwitcher() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1 rounded-lg px-2 py-2 text-sm text-brand-blue/70 hover:bg-brand-light"
+        className="flex items-center gap-1 rounded-lg px-2 py-2 text-sm text-white/70 hover:bg-white/10"
       >
         <Globe size={16} />
         <span className="uppercase">{currentLocale}</span>
