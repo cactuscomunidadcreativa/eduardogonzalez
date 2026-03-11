@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
-import { BookOpen, Clock, Music, Sparkles } from "lucide-react";
+import { Clock, Music } from "lucide-react";
 import { AnimatedNodes } from "@/components/brand/animated-nodes";
+import Image from "next/image";
 
 const upcomingBooks = [
   {
@@ -50,28 +51,24 @@ export default function BooksPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-brand-blue to-brand-blue/90 shadow-2xl">
             <div className="grid items-center md:grid-cols-5">
-              {/* Book visual */}
-              <div className="flex items-center justify-center bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 p-12 md:col-span-2">
+              {/* Book cover */}
+              <div className="flex items-center justify-center bg-gradient-to-br from-brand-orange/20 to-brand-orange/10 p-8 sm:p-12 md:col-span-2">
                 <div className="relative">
-                  {/* Book shape */}
-                  <div className="flex h-72 w-48 flex-col items-center justify-center rounded-r-lg rounded-l-sm bg-gradient-to-br from-brand-orange to-brand-orange/80 p-6 shadow-2xl shadow-brand-orange/30">
-                    <BookOpen className="mb-4 text-white/80" size={40} />
-                    <span className="text-center font-title text-2xl font-bold text-white">
-                      Redención
-                    </span>
-                    <span className="mt-2 text-xs text-white/60">
-                      Eduardo González
-                    </span>
-                  </div>
-                  {/* Book spine shadow */}
-                  <div className="absolute left-0 top-0 h-full w-1 rounded-l-sm bg-brand-orange/60" />
+                  <div className="absolute -inset-3 rounded-xl bg-brand-orange/20 blur-xl" />
+                  <Image
+                    src="/images/books/redencion.jpg"
+                    alt="Redención — De Oveja Negra a Oveja Libre"
+                    width={240}
+                    height={382}
+                    className="relative h-auto w-48 rounded-lg shadow-2xl sm:w-56"
+                  />
                 </div>
               </div>
 
               {/* Book info */}
               <div className="p-8 sm:p-12 md:col-span-3">
                 <span className="inline-block rounded-full bg-brand-green/20 px-3 py-1 text-xs font-bold text-brand-green">
-                  {t("published")} · 2019
+                  {t("published")} · 2025
                 </span>
                 <h2 className="mt-4 font-title text-3xl font-bold text-white sm:text-4xl">
                   Redención
