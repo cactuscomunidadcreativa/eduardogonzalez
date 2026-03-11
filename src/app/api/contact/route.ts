@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { z } from "zod";
 
@@ -8,6 +8,20 @@ const contactSchema = z.object({
   type: z.enum(["CONFERENCE", "CONSULTING", "COLLABORATION", "MEDIA", "OTHER"]),
   message: z.string().min(1),
 });
+
+export async function GET(req: NextRequest) {
+  const countOnly = req.nextUrl.searchParams.get("count") === "true";
+
+  if (countOnly) {
+    const count = await db.contactSubmission.count();
+    return NextResponse.json({ count });
+  }
+
+  const submissions = await db.contactSubmission.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+  return NextResponse.json(submissions);
+}
 
 export async function POST(req: Request) {
   try {

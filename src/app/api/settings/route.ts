@@ -18,6 +18,9 @@ export async function GET() {
       linkedin: "",
       youtube: "",
       twitter: "",
+      botPersonality: "",
+      botGreeting: "",
+      botName: "Pregúntale a Eduardo",
     });
   }
   const t = page.translations.find((t: { locale: string }) => t.locale === "es");

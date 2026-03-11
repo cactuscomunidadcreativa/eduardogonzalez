@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { generateText } from "ai";
-import { aiModel } from "@/lib/ai";
+import { getAIModel } from "@/lib/ai";
 
 const LOCALE_NAMES: Record<string, string> = {
   es: "Spanish",
@@ -25,8 +25,9 @@ export async function POST(req: Request) {
     const fromLang = LOCALE_NAMES[fromLocale] || fromLocale;
     const toLang = LOCALE_NAMES[toLocale] || toLocale;
 
+    const model = await getAIModel();
     const result = await generateText({
-      model: aiModel,
+      model,
       system: `You are a professional translator for Eduardo González's personal website. Translate content naturally and accurately, preserving:
 - The tone and voice (warm, reflective, intellectually curious)
 - Technical terms related to emotional intelligence (keep "Six Seconds", "KCG model", brand names as-is)

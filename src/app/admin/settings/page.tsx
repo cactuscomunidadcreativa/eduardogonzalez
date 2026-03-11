@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save, Check, Loader2, Key, Eye, EyeOff } from "lucide-react";
+import { Save, Check, Loader2, Key, Eye, EyeOff, Brain } from "lucide-react";
 
 export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
@@ -19,6 +19,9 @@ export default function AdminSettingsPage() {
   const [twitter, setTwitter] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
   const [showAnthropicKey, setShowAnthropicKey] = useState(false);
+  const [botPersonality, setBotPersonality] = useState("");
+  const [botGreeting, setBotGreeting] = useState("");
+  const [botName, setBotName] = useState("Pregúntale a Eduardo");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -34,6 +37,9 @@ export default function AdminSettingsPage() {
         if (data.youtube) setYoutube(data.youtube);
         if (data.twitter) setTwitter(data.twitter);
         if (data.anthropicKey) setAnthropicKey(data.anthropicKey);
+        if (data.botPersonality) setBotPersonality(data.botPersonality);
+        if (data.botGreeting) setBotGreeting(data.botGreeting);
+        if (data.botName) setBotName(data.botName);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -50,6 +56,7 @@ export default function AdminSettingsPage() {
           siteName, siteDescription, contactEmail,
           seoTitle, seoDescription,
           instagram, linkedin, youtube, twitter, anthropicKey,
+          botPersonality, botGreeting, botName,
         }),
       });
       setSaved(true);
@@ -204,6 +211,57 @@ export default function AdminSettingsPage() {
               </div>
               <p className="mt-1 text-xs text-gray-400">
                 Usada para el bot &quot;Pregúntale a Eduardo&quot; y las traducciones automáticas ES/EN/PT
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bot Configuration */}
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="mb-4 flex items-center gap-2">
+            <Brain size={16} className="text-brand-orange" />
+            <h3 className="text-sm font-semibold text-gray-700">Configuración del Bot</h3>
+          </div>
+          <p className="mb-4 text-xs text-gray-400">
+            Configura el comportamiento, personalidad y apariencia del bot &quot;Pregúntale a Eduardo&quot;.
+          </p>
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1 block text-sm text-gray-500">Nombre del Bot</label>
+              <input
+                value={botName}
+                onChange={(e) => setBotName(e.target.value)}
+                placeholder="Pregúntale a Eduardo"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
+              />
+              <p className="mt-1 text-xs text-gray-400">
+                El nombre que se muestra en el botón del chat y el encabezado.
+              </p>
+            </div>
+            <div>
+              <label className="mb-1 block text-sm text-gray-500">Mensaje de bienvenida</label>
+              <textarea
+                rows={3}
+                value={botGreeting}
+                onChange={(e) => setBotGreeting(e.target.value)}
+                placeholder="¡Hola! Soy el asistente de Eduardo González. Puedo ayudarte con preguntas sobre inteligencia emocional, Emotional Budgeting, sistemas humanos, liderazgo consciente y los proyectos de Eduardo. ¿Qué te gustaría explorar?"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
+              />
+              <p className="mt-1 text-xs text-gray-400">
+                El primer mensaje que ve el usuario al abrir el chat. Si se deja vacío, se usa el mensaje del archivo de traducciones.
+              </p>
+            </div>
+            <div>
+              <label className="mb-1 block text-sm text-gray-500">Personalidad del Bot</label>
+              <textarea
+                rows={12}
+                value={botPersonality}
+                onChange={(e) => setBotPersonality(e.target.value)}
+                placeholder={"Eres la representación digital de Eduardo González. Responde siempre en primera persona, como si fueras Eduardo hablando directamente con quien te escribe.\n\nSoy Eduardo González, Director para Latinoamérica en Six Seconds...\n\nPersonalidad: cálido, reflexivo, intelectualmente curioso. Uso metáforas y preguntas para provocar reflexión. Soy directo pero empático."}
+                className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
+              />
+              <p className="mt-1 text-xs text-gray-400">
+                Define cómo se comporta el bot &quot;Pregúntale a Eduardo&quot;. Incluye el tono, estilo de respuesta, información personal y cualquier instrucción especial. Si se deja vacío, se usa la personalidad predeterminada.
               </p>
             </div>
           </div>

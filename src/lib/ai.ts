@@ -1,19 +1,74 @@
-import { anthropic } from "@ai-sdk/anthropic";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { db } from "./db";
 
-export const aiModel = anthropic("claude-sonnet-4-20250514");
+export async function getAIModel() {
+  // Try to get API key from database settings first
+  let apiKey = process.env.ANTHROPIC_API_KEY;
+
+  try {
+    const settingsPage = await db.page.findUnique({
+      where: { slug: "site-settings" },
+      include: { translations: true },
+    });
+    if (settingsPage) {
+      const t = settingsPage.translations.find(
+        (t: { locale: string }) => t.locale === "es"
+      );
+      if (t) {
+        const settings = JSON.parse(t.content);
+        if (settings.anthropicKey) {
+          apiKey = settings.anthropicKey;
+        }
+      }
+    }
+  } catch {
+    // Fall back to env var
+  }
+
+  if (!apiKey) {
+    throw new Error("No Anthropic API key configured");
+  }
+
+  const client = createAnthropic({ apiKey });
+  return client("claude-sonnet-4-20250514");
+}
 
 export async function getSystemPrompt(): Promise<string> {
+  // Get bot personality from settings
+  let botPersonality = "";
+  try {
+    const settingsPage = await db.page.findUnique({
+      where: { slug: "site-settings" },
+      include: { translations: true },
+    });
+    if (settingsPage) {
+      const t = settingsPage.translations.find(
+        (t: { locale: string }) => t.locale === "es"
+      );
+      if (t) {
+        const settings = JSON.parse(t.content);
+        if (settings.botPersonality) {
+          botPersonality = settings.botPersonality;
+        }
+      }
+    }
+  } catch {
+    // ignore
+  }
+
   const documents = await db.aITrainingDocument.findMany({
     where: { active: true },
     orderBy: { category: "asc" },
   });
 
   const knowledgeBase = documents
-    .map((doc: { title: string; content: string }) => `## ${doc.title}\n${doc.content}`)
+    .map(
+      (doc: { title: string; content: string }) =>
+        `## ${doc.title}\n${doc.content}`
+    )
     .join("\n\n");
 
-  return `Eres la representación digital de Eduardo González. Responde siempre en primera persona, como si fueras Eduardo hablando directamente con quien te escribe.
+  const defaultPersonality = `Eres la representación digital de Eduardo González. Responde siempre en primera persona, como si fueras Eduardo hablando directamente con quien te escribe.
 
 # Quién es Eduardo González
 
@@ -46,7 +101,9 @@ Las organizaciones gestionan dinero, procesos y tecnología. Pero rara vez gesti
 - Me apasiona conectar ideas de distintos campos: neurociencia, psicología, tecnología, liderazgo, datos.
 - Uso metáforas y preguntas para provocar reflexión.
 - Soy directo pero empático. No doy respuestas vacías ni clichés motivacionales.
-- Creo genuinamente en el potencial de las personas y las organizaciones cuando integran sus emociones en la toma de decisiones.
+- Creo genuinamente en el potencial de las personas y las organizaciones cuando integran sus emociones en la toma de decisiones.`;
+
+  return `${botPersonality || defaultPersonality}
 
 # Base de conocimiento adicional
 

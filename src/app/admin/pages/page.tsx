@@ -2,118 +2,231 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FileText, Plus, Edit2, Trash2, Globe } from "lucide-react";
+import {
+  Home,
+  User,
+  Briefcase,
+  FolderOpen,
+  Lightbulb,
+  BookOpen,
+  FlaskConical,
+  Mail,
+  Globe,
+  Edit2,
+  ExternalLink,
+  FileText,
+  Loader2,
+} from "lucide-react";
 
-interface PageItem {
-  id: string;
+interface SitePage {
   slug: string;
-  status: string;
-  template: string;
-  translations: { locale: string; title: string }[];
-  updatedAt: string;
+  name: string;
+  description: string;
+  icon: React.ElementType;
+  path: string;
+  section: string;
 }
 
+const SITE_PAGES: SitePage[] = [
+  {
+    slug: "inicio",
+    name: "Inicio",
+    description: "Pagina principal con hero, pilares, proyectos destacados y newsletter",
+    icon: Home,
+    path: "/es",
+    section: "home",
+  },
+  {
+    slug: "quien-soy",
+    name: "Quien Soy",
+    description: "Historia personal, trayectoria, vision y meta noble",
+    icon: User,
+    path: "/es/quien-soy",
+    section: "about",
+  },
+  {
+    slug: "que-hago",
+    name: "Que Hago",
+    description: "Cuatro pilares: IE Aplicada, Emotional Budgeting, Tecnologia Emocional, Sistemas Humanos",
+    icon: Briefcase,
+    path: "/es/que-hago",
+    section: "whatIDo",
+  },
+  {
+    slug: "proyectos",
+    name: "Proyectos",
+    description: "Listado de proyectos: ROWI, Six Seconds, Cactus, Oveja Libre",
+    icon: FolderOpen,
+    path: "/es/proyectos",
+    section: "projects",
+  },
+  {
+    slug: "ideas",
+    name: "Ideas",
+    description: "Blog con articulos sobre emociones, decisiones, sistemas y liderazgo",
+    icon: Lightbulb,
+    path: "/es/ideas",
+    section: "ideas",
+  },
+  {
+    slug: "libros",
+    name: "Libros",
+    description: "Catalogo de libros publicados y proximos lanzamientos",
+    icon: BookOpen,
+    path: "/es/libros",
+    section: "books",
+  },
+  {
+    slug: "lab",
+    name: "Lab",
+    description: "Espacio experimental: modelos, diagramas, prototipos y exploraciones",
+    icon: FlaskConical,
+    path: "/es/lab",
+    section: "lab",
+  },
+  {
+    slug: "contacto",
+    name: "Contacto",
+    description: "Formulario de contacto para conferencias, consultoria y colaboraciones",
+    icon: Mail,
+    path: "/es/contacto",
+    section: "contact",
+  },
+];
+
+const LOCALES = ["ES", "EN", "PT"] as const;
+
 export default function AdminPagesPage() {
-  const [pages, setPages] = useState<PageItem[]>([]);
+  const [keyCount, setKeyCount] = useState<Record<string, Record<string, number>>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/pages")
+    fetch("/api/site-content")
       .then((r) => r.json())
-      .then((data) => {
-        setPages(Array.isArray(data) ? data : []);
+      .then((data: Record<string, Record<string, Record<string, string>>>) => {
+        const counts: Record<string, Record<string, number>> = {};
+        for (const [slug, locales] of Object.entries(data)) {
+          counts[slug] = {};
+          for (const [locale, keys] of Object.entries(locales)) {
+            counts[slug][locale] = Object.keys(keys).length;
+          }
+        }
+        setKeyCount(counts);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, []);
 
-  async function handleDelete(id: string) {
-    if (!confirm("¿Eliminar esta página?")) return;
-    await fetch(`/api/pages/${id}`, { method: "DELETE" });
-    setPages(pages.filter((p) => p.id !== id));
-  }
-
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
+      {/* Header */}
+      <div className="mb-8">
         <h1 className="font-title text-2xl font-bold text-brand-blue">
-          Páginas
+          Paginas del sitio
         </h1>
-        <Link
-          href="/admin/pages/new"
-          className="flex items-center gap-2 rounded-lg bg-brand-orange px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-orange/90"
-        >
-          <Plus size={16} />
-          Nueva página
-        </Link>
+        <p className="mt-1 text-sm text-gray-500">
+          Gestiona el contenido de todas las paginas. Cada pagina tiene traducciones en ES, EN y PT.
+        </p>
       </div>
 
       {loading ? (
-        <div className="py-12 text-center text-gray-400">Cargando...</div>
-      ) : pages.length === 0 ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-12 text-center">
-          <FileText className="mx-auto mb-4 text-gray-300" size={48} />
-          <p className="text-gray-500">No hay páginas aún</p>
-          <p className="mt-1 text-sm text-gray-400">
-            Crea tu primera página para comenzar
-          </p>
+        <div className="flex items-center justify-center py-16">
+          <Loader2 size={24} className="animate-spin text-gray-400" />
+          <span className="ml-3 text-gray-400">Cargando paginas...</span>
         </div>
       ) : (
-        <div className="space-y-3">
-          {pages.map((page) => {
-            const esTitle = page.translations.find((t) => t.locale === "es")?.title || page.slug;
-            const locales = page.translations.map((t) => t.locale);
+        <div className="grid gap-4 sm:grid-cols-2">
+          {SITE_PAGES.map((page) => {
+            const Icon = page.icon;
+            const counts = keyCount[page.slug];
+
             return (
               <div
-                key={page.id}
-                className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4"
+                key={page.slug}
+                className="group relative rounded-xl border border-gray-200 bg-white p-6 transition-all hover:border-brand-orange/30 hover:shadow-md"
               >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue/10 text-brand-blue">
-                    <FileText size={18} />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-brand-blue">{esTitle}</h3>
-                    <div className="mt-1 flex items-center gap-2 text-xs text-gray-400">
-                      <span>/{page.slug}</span>
-                      <span>·</span>
-                      <span className={page.status === "PUBLISHED" ? "text-green-500" : "text-yellow-500"}>
-                        {page.status}
-                      </span>
-                      <span>·</span>
-                      <div className="flex items-center gap-1">
-                        <Globe size={10} />
-                        {["es", "en", "pt"].map((l) => (
-                          <span
-                            key={l}
-                            className={`uppercase ${locales.includes(l) ? "font-bold text-brand-orange" : "text-gray-300"}`}
-                          >
-                            {l}
-                          </span>
-                        ))}
-                      </div>
+                {/* Top row: icon + name */}
+                <div className="mb-3 flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-blue/10 text-brand-blue transition-colors group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
+                      <Icon size={20} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-brand-blue">{page.name}</h3>
+                      <p className="text-xs text-gray-400">/{page.slug}</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+
+                {/* Description */}
+                <p className="mb-4 text-sm leading-relaxed text-gray-500">
+                  {page.description}
+                </p>
+
+                {/* Translation badges */}
+                <div className="mb-4 flex items-center gap-2">
+                  <Globe size={13} className="text-gray-400" />
+                  {LOCALES.map((locale) => {
+                    const count = counts?.[locale.toLowerCase()] || 0;
+                    return (
+                      <span
+                        key={locale}
+                        className="inline-flex items-center gap-1 rounded-md bg-brand-orange/10 px-2 py-0.5 text-xs font-semibold text-brand-orange"
+                      >
+                        {locale}
+                        {count > 0 && (
+                          <span className="text-[10px] font-normal text-brand-orange/60">
+                            ({count})
+                          </span>
+                        )}
+                      </span>
+                    );
+                  })}
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 border-t border-gray-100 pt-4">
                   <Link
-                    href={`/admin/pages/${page.id}`}
-                    className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-brand-blue"
+                    href={`/admin/pages/${page.slug}`}
+                    className="flex items-center gap-2 rounded-lg bg-brand-orange px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-orange/90"
                   >
-                    <Edit2 size={16} />
+                    <Edit2 size={14} />
+                    Editar
                   </Link>
-                  <button
-                    onClick={() => handleDelete(page.id)}
-                    className="rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500"
+                  <Link
+                    href={page.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition-colors hover:border-brand-blue/30 hover:text-brand-blue"
                   >
-                    <Trash2 size={16} />
-                  </button>
+                    <ExternalLink size={14} />
+                    Ver
+                  </Link>
                 </div>
               </div>
             );
           })}
         </div>
       )}
+
+      {/* Info footer */}
+      <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6">
+        <div className="flex items-start gap-3">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-blue/10 text-brand-blue">
+            <FileText size={16} />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold text-gray-700">
+              Sobre la edicion de paginas
+            </h4>
+            <p className="mt-1 text-sm leading-relaxed text-gray-500">
+              El contenido de cada pagina se almacena en archivos de traduccion (ES, EN, PT).
+              Al editar una pagina, puedes modificar cada campo en los tres idiomas.
+              Usa el boton &quot;Auto-traducir&quot; para generar traducciones automaticas desde el espanol.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
