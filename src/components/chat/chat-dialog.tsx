@@ -2,8 +2,113 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useTranslations } from "next-intl";
-import { Send, AlertCircle } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+import { Send, AlertCircle, ThumbsUp, ThumbsDown, X } from "lucide-react";
+import { useRef, useEffect, useState, useMemo } from "react";
+
+// Convert URLs in text to clickable links
+function MessageContent({ text }: { text: string }) {
+  const parts = useMemo(() => {
+    const urlRegex = /(https?:\/\/[^\s)<]+|www\.[^\s)<]+)/gi;
+    const segments: { type: "text" | "link"; value: string; href: string }[] = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = urlRegex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        segments.push({
+          type: "text",
+          value: text.slice(lastIndex, match.index),
+          href: "",
+        });
+      }
+      const url = match[0];
+      const href = url.startsWith("http") ? url : `https://${url}`;
+      segments.push({ type: "link", value: url, href });
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < text.length) {
+      segments.push({
+        type: "text",
+        value: text.slice(lastIndex),
+        href: "",
+      });
+    }
+
+    return segments;
+  }, [text]);
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.type === "link" ? (
+          <a
+            key={i}
+            href={part.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-orange underline underline-offset-2 break-all hover:opacity-80"
+          >
+            {part.value}
+          </a>
+        ) : (
+          <span key={i}>{part.value}</span>
+        )
+      )}
+    </>
+  );
+}
+
+// Feedback buttons for assistant messages
+function MessageFeedback({ messageId }: { messageId: string }) {
+  const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
+
+  function handleFeedback(type: "like" | "dislike") {
+    setFeedback(type);
+    fetch("/api/chat-feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messageId, feedback: type }),
+    }).catch(() => {});
+  }
+
+  if (feedback) {
+    return (
+      <div className="mt-1.5 flex items-center gap-1 text-[10px] text-brand-blue/30">
+        {feedback === "like" ? (
+          <span className="flex items-center gap-1">
+            <ThumbsUp size={10} className="text-brand-green" />
+            Gracias
+          </span>
+        ) : (
+          <span className="flex items-center gap-1">
+            <ThumbsDown size={10} className="text-brand-orange" />
+            Gracias por tu feedback
+          </span>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-1.5 flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+      <button
+        onClick={() => handleFeedback("like")}
+        className="rounded p-0.5 text-brand-blue/25 transition hover:bg-brand-green/10 hover:text-brand-green"
+        title="Útil"
+      >
+        <ThumbsUp size={12} />
+      </button>
+      <button
+        onClick={() => handleFeedback("dislike")}
+        className="rounded p-0.5 text-brand-blue/25 transition hover:bg-red-50 hover:text-red-400"
+        title="No útil"
+      >
+        <ThumbsDown size={12} />
+      </button>
+    </div>
+  );
+}
 
 export function ChatDialog({ onClose }: { onClose: () => void }) {
   const t = useTranslations("chat");
@@ -24,11 +129,17 @@ export function ChatDialog({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed bottom-20 right-6 z-50 flex h-[500px] w-[380px] flex-col overflow-hidden rounded-2xl border border-brand-light bg-white shadow-2xl">
-      <div className="border-b border-brand-light bg-brand-blue px-4 py-3">
+    <div className="fixed bottom-20 right-4 sm:right-6 z-50 flex h-[480px] w-[calc(100vw-2rem)] sm:w-[380px] flex-col overflow-hidden rounded-2xl border border-brand-light bg-white shadow-2xl">
+      <div className="flex items-center justify-between border-b border-brand-light bg-brand-blue px-4 py-3">
         <h3 className="font-title text-sm font-semibold text-white">
           {t("button")}
         </h3>
+        <button
+          onClick={onClose}
+          className="rounded-full p-1 text-white/50 transition hover:bg-white/10 hover:text-white"
+        >
+          <X size={16} />
+        </button>
       </div>
 
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -40,15 +151,22 @@ export function ChatDialog({ onClose }: { onClose: () => void }) {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`rounded-lg p-3 text-sm whitespace-pre-wrap ${
+            className={`group rounded-lg p-3 text-sm whitespace-pre-wrap ${
               msg.role === "user"
                 ? "ml-8 bg-brand-orange text-white"
                 : "mr-8 bg-brand-light text-brand-blue"
             }`}
           >
             {msg.parts?.map((part, i) =>
-              part.type === "text" ? <span key={i}>{part.text}</span> : null
+              part.type === "text" ? (
+                msg.role === "assistant" ? (
+                  <MessageContent key={i} text={part.text} />
+                ) : (
+                  <span key={i}>{part.text}</span>
+                )
+              ) : null
             )}
+            {msg.role === "assistant" && <MessageFeedback messageId={msg.id} />}
           </div>
         ))}
         {isLoading && messages[messages.length - 1]?.role === "user" && (

@@ -106,6 +106,7 @@
   },
   "ideas": {
     "title": "Ideas",
+    "subtitle": "Reflexiones sobre emociones, decisiones y sistemas humanos.",
     "readMore": "Leer más",
     "minuteRead": "{minutes} min de lectura",
     "allCategories": "Todas",
@@ -118,7 +119,13 @@
     "writeComment": "Comparte tu reflexión...",
     "submitComment": "Enviar",
     "commentPending": "Tu comentario está pendiente de aprobación.",
-    "noArticles": "Aún no hay artículos en esta categoría. Pronto habrá nuevas ideas."
+    "noArticles": "Aún no hay artículos publicados. Pronto habrá nuevas ideas.",
+    "backToIdeas": "Volver a Ideas",
+    "author": "Eduardo González",
+    "publishedOn": "Publicado el",
+    "notFound": "Artículo no encontrado",
+    "notFoundDesc": "El artículo que buscas no existe o no está disponible.",
+    "share": "Compartir"
   },
   "books": {
     "title": "Libros",

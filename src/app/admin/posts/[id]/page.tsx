@@ -2,8 +2,9 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Check, Languages, Loader2, ArrowLeft } from "lucide-react";
+import { Save, Check, Languages, Loader2, ArrowLeft, ImageIcon, X } from "lucide-react";
 import Link from "next/link";
+import RichTextEditor from "@/components/editor/rich-text-editor";
 
 interface Translation {
   locale: string;
@@ -45,6 +46,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
     en: emptyTranslation("en"),
     pt: emptyTranslation("pt"),
   });
+  const [featuredImage, setFeaturedImage] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [translating, setTranslating] = useState<string | null>(null);
@@ -61,6 +63,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         setSlug(data.slug || "");
         setStatus(data.status || "DRAFT");
         setCategory(data.category || "EMOTIONS");
+        setFeaturedImage(data.featuredImage || "");
         const trans: Record<string, Translation> = {
           es: emptyTranslation("es"),
           en: emptyTranslation("en"),
@@ -97,6 +100,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
       slug,
       status,
       category,
+      featuredImage: featuredImage || null,
       translations: Object.values(translations).filter((t) => t.title || t.content),
     };
 
@@ -296,7 +300,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </select>
           </div>
           <div>
-            <label className="mb-1 block text-sm text-gray-500">Categoría</label>
+            <label className="mb-1 block text-sm text-gray-500">Categoria</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -309,6 +313,45 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
               ))}
             </select>
           </div>
+        </div>
+
+        {/* Featured Image */}
+        <div className="mt-4">
+          <label className="mb-1 block text-sm text-gray-500">
+            <ImageIcon size={14} className="mr-1 inline-block" />
+            Imagen destacada
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              value={featuredImage}
+              onChange={(e) => setFeaturedImage(e.target.value)}
+              placeholder="Pega la URL de la imagen destacada..."
+              className="flex-1 rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
+            />
+            {featuredImage && (
+              <button
+                type="button"
+                onClick={() => setFeaturedImage("")}
+                className="rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-red-500"
+                title="Quitar imagen"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
+          {featuredImage && (
+            <div className="mt-3 overflow-hidden rounded-lg border border-gray-200">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={featuredImage}
+                alt="Imagen destacada"
+                className="h-48 w-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -373,12 +416,10 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             </div>
             <div>
               <label className="mb-1 block text-sm text-gray-500">Contenido</label>
-              <textarea
-                value={current.content}
-                onChange={(e) => updateTranslation(activeLocale, "content", e.target.value)}
-                placeholder="Escribe el contenido del artículo..."
-                rows={16}
-                className="w-full rounded-lg border border-gray-200 px-4 py-3 text-sm leading-relaxed outline-none focus:border-brand-orange"
+              <RichTextEditor
+                content={current.content}
+                onChange={(html) => updateTranslation(activeLocale, "content", html)}
+                placeholder="Escribe el contenido del articulo..."
               />
             </div>
           </div>
