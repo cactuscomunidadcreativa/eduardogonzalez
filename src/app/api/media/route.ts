@@ -1,39 +1,46 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
 import fs from "fs/promises";
 import path from "path";
 
-interface ImageFile {
+interface MediaItem {
+  id: string;
   name: string;
-  path: string;
   url: string;
   size: number;
   category: string;
+  source: "static" | "db";
 }
 
-async function scanDirectory(
+// Scan static files in public/images (for images shipped with the repo)
+async function scanStaticDir(
   dir: string,
   baseUrl: string,
   category: string
-): Promise<ImageFile[]> {
-  const files: ImageFile[] = [];
+): Promise<MediaItem[]> {
+  const files: MediaItem[] = [];
   try {
     const entries = await fs.readdir(dir, { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isFile() && /\.(jpg|jpeg|png|gif|svg|webp|ico)$/i.test(entry.name)) {
+      if (
+        entry.isFile() &&
+        /\.(jpg|jpeg|png|gif|svg|webp|ico)$/i.test(entry.name)
+      ) {
         const filePath = path.join(dir, entry.name);
         const stat = await fs.stat(filePath);
         files.push({
+          id: `static-${baseUrl}/${entry.name}`,
           name: entry.name,
-          path: filePath,
           url: `${baseUrl}/${entry.name}`,
           size: stat.size,
           category,
+          source: "static",
         });
       }
     }
   } catch {
-    // Directory might not exist
+    // Directory might not exist in serverless
   }
   return files;
 }
@@ -41,31 +48,80 @@ async function scanDirectory(
 export async function GET() {
   try {
     const session = await auth();
-    if (!session?.user || (session.user as Record<string, unknown>).role !== "ADMIN") {
+    if (
+      !session?.user ||
+      (session.user as Record<string, unknown>).role !== "ADMIN"
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get DB images (without the binary data)
+    const dbMedia = await db.media.findMany({
+      select: {
+        id: true,
+        filename: true,
+        url: true,
+        size: true,
+        category: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const dbFiles: MediaItem[] = dbMedia.map((m) => ({
+      id: m.id,
+      name: m.filename,
+      url: m.url,
+      size: m.size,
+      category: m.category,
+      source: "db" as const,
+    }));
+
+    // Also scan static files (works locally and on Vercel for repo files)
     const publicDir = path.join(process.cwd(), "public");
-    const images: ImageFile[] = [];
+    const staticFiles: MediaItem[] = [];
+    try {
+      staticFiles.push(
+        ...(await scanStaticDir(
+          path.join(publicDir, "images"),
+          "/images",
+          "General"
+        )),
+        ...(await scanStaticDir(
+          path.join(publicDir, "images", "logos"),
+          "/images/logos",
+          "Logos"
+        )),
+        ...(await scanStaticDir(
+          path.join(publicDir, "images", "books"),
+          "/images/books",
+          "Libros"
+        ))
+      );
+    } catch {
+      // Ignore static scan errors on serverless
+    }
 
-    // Scan all image directories
-    images.push(
-      ...(await scanDirectory(path.join(publicDir, "images"), "/images", "General")),
-      ...(await scanDirectory(path.join(publicDir, "images", "logos"), "/images/logos", "Logos")),
-      ...(await scanDirectory(path.join(publicDir, "images", "books"), "/images/books", "Libros")),
-    );
+    // Combine: DB files first, then static files not in DB
+    const dbUrls = new Set(dbFiles.map((f) => f.url));
+    const uniqueStatic = staticFiles.filter((f) => !dbUrls.has(f.url));
 
-    return NextResponse.json(images);
+    return NextResponse.json([...dbFiles, ...uniqueStatic]);
   } catch (error) {
     console.error("Media GET error:", error);
-    return NextResponse.json({ error: "Failed to list media" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to list media" },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    if (!session?.user || (session.user as Record<string, unknown>).role !== "ADMIN") {
+    if (
+      !session?.user ||
+      (session.user as Record<string, unknown>).role !== "ADMIN"
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -77,37 +133,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Determine target directory
-    let targetDir: string;
-    let urlPrefix: string;
-
-    switch (category) {
-      case "Logos":
-        targetDir = path.join(process.cwd(), "public", "images", "logos");
-        urlPrefix = "/images/logos";
-        break;
-      case "Libros":
-        targetDir = path.join(process.cwd(), "public", "images", "books");
-        urlPrefix = "/images/books";
-        break;
-      default:
-        targetDir = path.join(process.cwd(), "public", "images");
-        urlPrefix = "/images";
-        break;
-    }
-
-    // Ensure directory exists
-    await fs.mkdir(targetDir, { recursive: true });
-
-    // Save file
+    // Read file data
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").toLowerCase();
-    const filePath = path.join(targetDir, fileName);
-    await fs.writeFile(filePath, buffer);
+
+    // Store in database
+    const media = await db.media.create({
+      data: {
+        filename: fileName,
+        url: "", // Temp - will update with ID
+        mimeType: file.type || "image/jpeg",
+        size: buffer.length,
+        category,
+        data: buffer,
+      },
+    });
+
+    // Set URL to the serve endpoint
+    const url = `/api/media/${media.id}`;
+    await db.media.update({
+      where: { id: media.id },
+      data: { url },
+    });
 
     return NextResponse.json({
       success: true,
-      url: `${urlPrefix}/${fileName}`,
+      id: media.id,
+      url,
       name: fileName,
     });
   } catch (error) {
@@ -119,17 +171,28 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const session = await auth();
-    if (!session?.user || (session.user as Record<string, unknown>).role !== "ADMIN") {
+    if (
+      !session?.user ||
+      (session.user as Record<string, unknown>).role !== "ADMIN"
+    ) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { filePath } = await req.json();
+    const { id } = await req.json();
 
-    if (!filePath || !filePath.startsWith(path.join(process.cwd(), "public"))) {
-      return NextResponse.json({ error: "Invalid path" }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: "No ID provided" }, { status: 400 });
     }
 
-    await fs.unlink(filePath);
+    // Don't delete static files
+    if (typeof id === "string" && id.startsWith("static-")) {
+      return NextResponse.json(
+        { error: "No se pueden eliminar archivos estáticos" },
+        { status: 400 }
+      );
+    }
+
+    await db.media.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Media delete error:", error);

@@ -13,11 +13,12 @@ import {
 } from "lucide-react";
 
 interface MediaFile {
+  id: string;
   name: string;
-  path: string;
   url: string;
   size: number;
   category: string;
+  source?: "static" | "db";
 }
 
 const CATEGORIES = ["Todos", "General", "Logos", "Libros"];
@@ -58,13 +59,15 @@ export default function AdminMediaPage() {
     if (!fileList || fileList.length === 0) return;
 
     setUploading(true);
+    let successCount = 0;
     for (const file of Array.from(fileList)) {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("category", uploadCategory);
 
       try {
-        await fetch("/api/media", { method: "POST", body: formData });
+        const res = await fetch("/api/media", { method: "POST", body: formData });
+        if (res.ok) successCount++;
       } catch {
         // ignore individual errors
       }
@@ -72,7 +75,9 @@ export default function AdminMediaPage() {
 
     if (fileInputRef.current) fileInputRef.current.value = "";
     setUploading(false);
-    fetchMedia();
+    if (successCount > 0) {
+      await fetchMedia();
+    }
   }
 
   function copyUrl(url: string) {
@@ -188,7 +193,7 @@ export default function AdminMediaPage() {
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filteredFiles.map((file) => (
             <div
-              key={file.url}
+              key={file.id || file.url}
               className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:shadow-md"
             >
               <button

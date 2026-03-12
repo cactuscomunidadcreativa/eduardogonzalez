@@ -239,6 +239,8 @@ model Media {
   width     Int?
   height    Int?
   alt       String?
+  category  String   @default("General")
+  data      Bytes?
   createdAt DateTime @default(now())
 }
 
