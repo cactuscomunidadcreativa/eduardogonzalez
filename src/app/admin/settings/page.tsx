@@ -17,6 +17,7 @@ export default function AdminSettingsPage() {
   const [linkedin, setLinkedin] = useState("");
   const [youtube, setYoutube] = useState("");
   const [twitter, setTwitter] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
   const [showAnthropicKey, setShowAnthropicKey] = useState(false);
   const [botPersonality, setBotPersonality] = useState("");
@@ -36,6 +37,7 @@ export default function AdminSettingsPage() {
         if (data.linkedin) setLinkedin(data.linkedin);
         if (data.youtube) setYoutube(data.youtube);
         if (data.twitter) setTwitter(data.twitter);
+        if (data.whatsapp) setWhatsapp(data.whatsapp);
         if (data.anthropicKey) setAnthropicKey(data.anthropicKey);
         if (data.botPersonality) setBotPersonality(data.botPersonality);
         if (data.botGreeting) setBotGreeting(data.botGreeting);
@@ -55,7 +57,7 @@ export default function AdminSettingsPage() {
         body: JSON.stringify({
           siteName, siteDescription, contactEmail,
           seoTitle, seoDescription,
-          instagram, linkedin, youtube, twitter, anthropicKey,
+          instagram, linkedin, youtube, twitter, whatsapp, anthropicKey,
           botPersonality, botGreeting, botName,
         }),
       });
@@ -177,6 +179,18 @@ export default function AdminSettingsPage() {
                 placeholder="https://x.com/eduardogonzalez"
                 className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
               />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm text-gray-500">WhatsApp</label>
+              <input
+                value={whatsapp}
+                onChange={(e) => setWhatsapp(e.target.value)}
+                placeholder="+17863954654"
+                className="w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-brand-orange"
+              />
+              <p className="mt-1 text-xs text-gray-400">
+                Número con código de país. Se usará para el enlace de WhatsApp en el footer.
+              </p>
             </div>
           </div>
         </div>
