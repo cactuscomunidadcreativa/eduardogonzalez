@@ -49,7 +49,7 @@ export default function TarjetaPage() {
         {/* Card */}
         <div className="overflow-hidden rounded-3xl bg-white shadow-2xl">
           {/* Header with gradient */}
-          <div className="relative bg-gradient-to-br from-brand-blue to-brand-blue/80 px-6 pb-16 pt-8 text-center">
+          <div className="relative bg-gradient-to-br from-brand-blue to-brand-blue/80 px-6 pb-20 pt-8 text-center">
             <div className="absolute inset-0 opacity-10">
               <div className="absolute left-1/4 top-1/4 h-32 w-32 rounded-full bg-brand-orange blur-3xl" />
               <div className="absolute right-1/4 bottom-1/4 h-24 w-24 rounded-full bg-brand-green blur-2xl" />
@@ -71,7 +71,7 @@ export default function TarjetaPage() {
           </div>
 
           {/* Profile info overlapping header */}
-          <div className="-mt-10 px-6">
+          <div className="-mt-12 px-6 relative z-10">
             <div className="rounded-2xl bg-white p-5 shadow-lg ring-1 ring-black/5">
               <h1 className="font-title text-xl font-bold text-brand-blue">
                 {contactInfo.name}
