@@ -19,11 +19,13 @@ function generateVCard(): string {
     "URL;TYPE=WORK:https://www.eduardogonzalez.coach",
     "URL;TYPE=pref:https://www.6seconds.org",
     "URL:https://www.esp.6seconds.org",
+    // Calendly
+    "URL:https://calendly.com/eduardo-gonzalez/15min",
     // Social profiles
     "X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/eduardogonzalez.coach/",
     "X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/eduhgonzalez",
     // Note
-    "NOTE:Emotions · Decisions · Human Systems | Director LATAM en Six Seconds | Creador de ROWI | Emotional Budgeting",
+    "NOTE:Emotions · Decisions · Human Systems | Director LATAM en Six Seconds | Creador de ROWI | Emotional Budgeting | Agenda: https://calendly.com/eduardo-gonzalez/15min",
     // Categories
     "CATEGORIES:Coaching,Inteligencia Emocional,Liderazgo",
     "END:VCARD",

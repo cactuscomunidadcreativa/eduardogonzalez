@@ -8,6 +8,7 @@ import {
   Download,
   QrCode,
   ExternalLink,
+  CalendarCheck,
 } from "lucide-react";
 
 const contactInfo = {
@@ -140,6 +141,25 @@ export default function TarjetaPage() {
                 <ExternalLink size={14} className="text-brand-blue/30" />
               </a>
             ))}
+
+            {/* Calendly */}
+            <a
+              href="https://calendly.com/eduardo-gonzalez/15min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-xl px-4 py-3 transition hover:bg-brand-light"
+            >
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-orange/10 text-brand-orange">
+                <CalendarCheck size={18} />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs text-brand-blue/40">Agendar reunión</p>
+                <p className="text-sm font-medium text-brand-blue">
+                  Calendly — 15 min
+                </p>
+              </div>
+              <ExternalLink size={14} className="text-brand-blue/30" />
+            </a>
 
             {/* Social */}
             <div className="flex items-center gap-3 px-4 pt-3">
