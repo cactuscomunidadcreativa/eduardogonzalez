@@ -2,11 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, QrCode, Download, UserCircle } from "lucide-react";
 import { toast } from "sonner";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const pathname = usePathname();
+  const locale = pathname.split("/")[1] || "es";
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -121,6 +125,60 @@ export default function ContactPage() {
               {t("send")}
             </button>
           </form>
+        </div>
+      </section>
+
+      {/* vCard / Digital Contact Card */}
+      <section className="border-t border-brand-light bg-brand-light/50 py-16">
+        <div className="mx-auto max-w-xl px-4 text-center sm:px-6">
+          <div className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-black/5">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-blue/10">
+              <UserCircle size={28} className="text-brand-blue" />
+            </div>
+            <h3 className="font-title text-lg font-bold text-brand-blue">
+              Tarjeta de Contacto Digital
+            </h3>
+            <p className="mt-2 text-sm text-brand-blue/50">
+              Escanea el QR o descarga mi contacto directamente a tu teléfono con todos mis datos, redes y páginas web.
+            </p>
+
+            {/* QR Preview */}
+            <div className="mt-6 flex justify-center">
+              <div className="rounded-xl bg-brand-light p-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/api/vcard/qr"
+                  alt="QR Code - Contacto Eduardo González"
+                  width={140}
+                  height={140}
+                  className="h-36 w-36"
+                />
+              </div>
+            </div>
+
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-brand-blue/30">
+              <QrCode size={12} />
+              Escanea con tu cámara
+            </p>
+
+            {/* Action buttons */}
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="/api/vcard"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-orange py-3 text-sm font-semibold text-white shadow-md shadow-brand-orange/20 transition hover:bg-brand-orange/90"
+              >
+                <Download size={16} />
+                Guardar contacto
+              </a>
+              <Link
+                href={`/${locale}/tarjeta`}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-brand-blue/15 py-3 text-sm font-semibold text-brand-blue transition hover:bg-brand-light"
+              >
+                <QrCode size={16} />
+                Ver tarjeta completa
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>
