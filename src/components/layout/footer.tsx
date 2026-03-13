@@ -177,6 +177,11 @@ export function Footer() {
                   {tNav("contact")}
                 </Link>
               </li>
+              <li>
+                <Link href={`/${locale}/tarjeta`} className="hover:text-white">
+                  📇 Tarjeta Digital
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
