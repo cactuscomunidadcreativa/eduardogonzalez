@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import Cropper from "react-easy-crop";
-import type { Area } from "react-easy-crop";
+import type { Area, Point, Size } from "react-easy-crop";
 import {
   X,
   RotateCcw,
@@ -108,7 +108,7 @@ export default function ImageEditor({
   onSave,
   onClose,
 }: ImageEditorProps) {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [flipH, setFlipH] = useState(false);
@@ -118,6 +118,7 @@ export default function ImageEditor({
   const [saving, setSaving] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
   const [isReplacing, setIsReplacing] = useState(false);
+  const [cropSize, setCropSize] = useState<Size | undefined>(undefined);
   const replaceInputRef = useRef<HTMLInputElement>(null);
 
   const onCropComplete = useCallback((_: Area, croppedPixels: Area) => {
@@ -163,7 +164,7 @@ export default function ImageEditor({
 
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", file, file.name);
 
       const res = await fetch(`/api/media/${mediaId}`, {
         method: "PUT",
@@ -171,13 +172,17 @@ export default function ImageEditor({
       });
 
       if (res.ok) {
-        // Update the image URL with a cache-bust
-        setCurrentImageUrl(`/api/media/${mediaId}?t=${Date.now()}`);
+        // Update the image URL with cache-bust
+        const newUrl = `/api/media/${mediaId}?t=${Date.now()}`;
+        setCurrentImageUrl(newUrl);
         setRotation(0);
         setFlipH(false);
         setFlipV(false);
         setZoom(1);
         setCrop({ x: 0, y: 0 });
+        setCropSize(undefined);
+        // Notify parent to refresh the gallery
+        onSave();
       }
     } catch (err) {
       console.error("Error replacing image:", err);
@@ -220,8 +225,14 @@ export default function ImageEditor({
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}
+            cropSize={cropSize}
+            onCropSizeChange={(size) => setCropSize(size)}
+            restrictPosition={false}
+            minZoom={0.5}
+            maxZoom={5}
+            objectFit="contain"
             style={{
-              containerStyle: {
+              mediaStyle: {
                 transform: `scale(${flipH ? -1 : 1}, ${flipV ? -1 : 1})`,
               },
             }}
@@ -254,7 +265,7 @@ export default function ImageEditor({
             {/* Zoom */}
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setZoom((z) => Math.max(1, z - 0.1))}
+                onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}
                 className="rounded-lg bg-white p-2 text-gray-600 transition hover:bg-gray-100"
                 title="Alejar"
               >
@@ -264,7 +275,7 @@ export default function ImageEditor({
                 {Math.round(zoom * 100)}%
               </span>
               <button
-                onClick={() => setZoom((z) => Math.min(3, z + 0.1))}
+                onClick={() => setZoom((z) => Math.min(5, z + 0.1))}
                 className="rounded-lg bg-white p-2 text-gray-600 transition hover:bg-gray-100"
                 title="Acercar"
               >
