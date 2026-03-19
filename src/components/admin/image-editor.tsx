@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import Cropper from "react-easy-crop";
-import type { Area, Point, Size } from "react-easy-crop";
+import type { Area, Point } from "react-easy-crop";
 import {
   X,
   RotateCcw,
@@ -118,7 +118,7 @@ export default function ImageEditor({
   const [saving, setSaving] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
   const [isReplacing, setIsReplacing] = useState(false);
-  const [cropSize, setCropSize] = useState<Size | undefined>(undefined);
+  const [replaced, setReplaced] = useState(false);
   const replaceInputRef = useRef<HTMLInputElement>(null);
 
   const onCropComplete = useCallback((_: Area, croppedPixels: Area) => {
@@ -172,17 +172,14 @@ export default function ImageEditor({
       });
 
       if (res.ok) {
-        // Update the image URL with cache-bust
-        const newUrl = `/api/media/${mediaId}?t=${Date.now()}`;
-        setCurrentImageUrl(newUrl);
+        // Update the image URL with cache-bust, keep editor open
+        setCurrentImageUrl(`/api/media/${mediaId}?t=${Date.now()}`);
         setRotation(0);
         setFlipH(false);
         setFlipV(false);
         setZoom(1);
         setCrop({ x: 0, y: 0 });
-        setCropSize(undefined);
-        // Notify parent to refresh the gallery
-        onSave();
+        setReplaced(true);
       }
     } catch (err) {
       console.error("Error replacing image:", err);
@@ -192,7 +189,7 @@ export default function ImageEditor({
     }
   }
 
-  const hasEdits = rotation !== 0 || flipH || flipV || zoom !== 1;
+  const hasEdits = rotation !== 0 || flipH || flipV || zoom !== 1 || replaced;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
@@ -205,9 +202,14 @@ export default function ImageEditor({
             <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
               {mediaName}
             </span>
+            {replaced && (
+              <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-600">
+                Reemplazada
+              </span>
+            )}
           </div>
           <button
-            onClick={onClose}
+            onClick={() => { if (replaced) onSave(); onClose(); }}
             className="rounded-full p-2 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
           >
             <X size={20} />
@@ -225,14 +227,8 @@ export default function ImageEditor({
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}
-            cropSize={cropSize}
-            onCropSizeChange={(size) => setCropSize(size)}
-            restrictPosition={false}
-            minZoom={0.5}
-            maxZoom={5}
-            objectFit="contain"
             style={{
-              mediaStyle: {
+              containerStyle: {
                 transform: `scale(${flipH ? -1 : 1}, ${flipV ? -1 : 1})`,
               },
             }}
@@ -265,7 +261,7 @@ export default function ImageEditor({
             {/* Zoom */}
             <div className="flex items-center gap-1">
               <button
-                onClick={() => setZoom((z) => Math.max(0.5, z - 0.1))}
+                onClick={() => setZoom((z) => Math.max(1, z - 0.1))}
                 className="rounded-lg bg-white p-2 text-gray-600 transition hover:bg-gray-100"
                 title="Alejar"
               >
@@ -275,7 +271,7 @@ export default function ImageEditor({
                 {Math.round(zoom * 100)}%
               </span>
               <button
-                onClick={() => setZoom((z) => Math.min(5, z + 0.1))}
+                onClick={() => setZoom((z) => Math.min(3, z + 0.1))}
                 className="rounded-lg bg-white p-2 text-gray-600 transition hover:bg-gray-100"
                 title="Acercar"
               >

@@ -205,13 +205,22 @@ export default function AdminContactsPage() {
                 </p>
               </div>
 
-              <div className="mt-4">
+              <div className="mt-4 flex items-center gap-3">
                 <a
-                  href={`mailto:${selectedContact.email}?subject=Re: Contacto desde eduardogonzalez.coach`}
+                  href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(selectedContact.email)}&su=${encodeURIComponent("Re: Contacto desde eduardogonzalez.coach")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-brand-orange px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-orange/90"
                 >
                   <Mail size={14} />
-                  Responder por email
+                  Responder en Gmail
+                </a>
+                <a
+                  href={`mailto:${selectedContact.email}?subject=Re: Contacto desde eduardogonzalez.coach`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
+                >
+                  <Mail size={14} />
+                  Abrir en app de correo
                 </a>
               </div>
             </div>
