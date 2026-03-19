@@ -101,9 +101,12 @@ export async function GET() {
       // Ignore static scan errors on serverless
     }
 
-    // Combine: DB files first, then static files not in DB
+    // Combine: DB files first, then static files not already migrated to DB
     const dbUrls = new Set(dbFiles.map((f) => f.url));
-    const uniqueStatic = staticFiles.filter((f) => !dbUrls.has(f.url));
+    const dbFilenames = new Set(dbFiles.map((f) => f.name.toLowerCase()));
+    const uniqueStatic = staticFiles.filter(
+      (f) => !dbUrls.has(f.url) && !dbFilenames.has(f.name.toLowerCase())
+    );
 
     return NextResponse.json([...dbFiles, ...uniqueStatic]);
   } catch (error) {
