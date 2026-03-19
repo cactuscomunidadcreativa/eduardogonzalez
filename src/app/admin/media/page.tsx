@@ -10,7 +10,10 @@ import {
   ImageIcon,
   FolderOpen,
   X,
+  Pencil,
+  Trash2,
 } from "lucide-react";
+import ImageEditor from "@/components/admin/image-editor";
 
 interface MediaFile {
   id: string;
@@ -37,6 +40,8 @@ export default function AdminMediaPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [preview, setPreview] = useState<MediaFile | null>(null);
   const [uploadCategory, setUploadCategory] = useState("General");
+  const [editing, setEditing] = useState<MediaFile | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -85,6 +90,27 @@ export default function AdminMediaPage() {
     setCopied(url);
     setTimeout(() => setCopied(null), 2000);
   }
+
+  async function handleDelete(file: MediaFile) {
+    if (!confirm(`¿Eliminar "${file.name}"? Esta acción no se puede deshacer.`)) return;
+    setDeleting(file.id);
+    try {
+      const res = await fetch("/api/media", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: file.id }),
+      });
+      if (res.ok) {
+        await fetchMedia();
+        if (preview?.id === file.id) setPreview(null);
+      }
+    } catch {
+      // ignore
+    }
+    setDeleting(null);
+  }
+
+  const isEditable = (file: MediaFile) => file.source !== "static" && !file.id.startsWith("static-");
 
   const filteredFiles =
     activeCategory === "Todos"
@@ -208,6 +234,38 @@ export default function AdminMediaPage() {
                   unoptimized
                 />
               </button>
+
+              {/* Action buttons overlay */}
+              {isEditable(file) && (
+                <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition group-hover:opacity-100">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditing(file);
+                    }}
+                    className="rounded-lg bg-white/90 p-2 text-gray-600 shadow-sm transition hover:bg-brand-orange hover:text-white"
+                    title="Editar imagen"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(file);
+                    }}
+                    disabled={deleting === file.id}
+                    className="rounded-lg bg-white/90 p-2 text-gray-600 shadow-sm transition hover:bg-red-500 hover:text-white disabled:opacity-50"
+                    title="Eliminar imagen"
+                  >
+                    {deleting === file.id ? (
+                      <Loader2 size={14} className="animate-spin" />
+                    ) : (
+                      <Trash2 size={14} />
+                    )}
+                  </button>
+                </div>
+              )}
+
               <div className="p-3">
                 <p className="truncate text-sm font-medium text-gray-700" title={file.name}>
                   {file.name}
@@ -235,6 +293,15 @@ export default function AdminMediaPage() {
                       </>
                     )}
                   </button>
+                  {isEditable(file) && (
+                    <button
+                      onClick={() => setEditing(file)}
+                      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-brand-orange"
+                    >
+                      <Pencil size={12} />
+                      Editar
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -270,17 +337,45 @@ export default function AdminMediaPage() {
                 <code className="rounded bg-gray-100 px-2 py-1 text-xs">
                   {preview.url}
                 </code>
-                <button
-                  onClick={() => copyUrl(preview.url)}
-                  className="ml-auto flex items-center gap-1 rounded-lg bg-brand-orange px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-orange/90"
-                >
-                  {copied === preview.url ? <Check size={12} /> : <Copy size={12} />}
-                  Copiar URL
-                </button>
+                <div className="ml-auto flex items-center gap-2">
+                  {isEditable(preview) && (
+                    <button
+                      onClick={() => {
+                        setPreview(null);
+                        setEditing(preview);
+                      }}
+                      className="flex items-center gap-1 rounded-lg bg-brand-blue px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-blue/90"
+                    >
+                      <Pencil size={12} />
+                      Editar
+                    </button>
+                  )}
+                  <button
+                    onClick={() => copyUrl(preview.url)}
+                    className="flex items-center gap-1 rounded-lg bg-brand-orange px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-orange/90"
+                  >
+                    {copied === preview.url ? <Check size={12} /> : <Copy size={12} />}
+                    Copiar URL
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Image editor modal */}
+      {editing && (
+        <ImageEditor
+          imageUrl={editing.url}
+          mediaId={editing.id}
+          mediaName={editing.name}
+          onSave={() => {
+            setEditing(null);
+            fetchMedia();
+          }}
+          onClose={() => setEditing(null)}
+        />
       )}
     </div>
   );
