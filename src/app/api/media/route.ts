@@ -168,6 +168,71 @@ export async function POST(req: Request) {
   }
 }
 
+// Migrate a static file to database so it can be edited
+export async function PATCH(req: Request) {
+  try {
+    const session = await auth();
+    if (
+      !session?.user ||
+      (session.user as Record<string, unknown>).role !== "ADMIN"
+    ) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { staticUrl, category } = await req.json();
+
+    if (!staticUrl || typeof staticUrl !== "string") {
+      return NextResponse.json({ error: "No URL provided" }, { status: 400 });
+    }
+
+    // Read the static file from disk
+    const filePath = path.join(process.cwd(), "public", staticUrl);
+    const buffer = await fs.readFile(filePath);
+    const fileName = path.basename(staticUrl);
+
+    // Determine mime type from extension
+    const ext = path.extname(fileName).toLowerCase();
+    const mimeMap: Record<string, string> = {
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".png": "image/png",
+      ".gif": "image/gif",
+      ".svg": "image/svg+xml",
+      ".webp": "image/webp",
+      ".ico": "image/x-icon",
+    };
+    const mimeType = mimeMap[ext] || "image/jpeg";
+
+    // Store in database
+    const media = await db.media.create({
+      data: {
+        filename: fileName,
+        url: "",
+        mimeType,
+        size: buffer.length,
+        category: category || "General",
+        data: buffer,
+      },
+    });
+
+    const url = `/api/media/${media.id}`;
+    await db.media.update({
+      where: { id: media.id },
+      data: { url },
+    });
+
+    return NextResponse.json({
+      success: true,
+      id: media.id,
+      url,
+      name: fileName,
+    });
+  } catch (error) {
+    console.error("Media migrate error:", error);
+    return NextResponse.json({ error: "Migration failed" }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const session = await auth();

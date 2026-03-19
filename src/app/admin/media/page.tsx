@@ -12,6 +12,7 @@ import {
   X,
   Pencil,
   Trash2,
+  DatabaseZap,
 } from "lucide-react";
 import ImageEditor from "@/components/admin/image-editor";
 
@@ -42,6 +43,7 @@ export default function AdminMediaPage() {
   const [uploadCategory, setUploadCategory] = useState("General");
   const [editing, setEditing] = useState<MediaFile | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [migrating, setMigrating] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -110,7 +112,25 @@ export default function AdminMediaPage() {
     setDeleting(null);
   }
 
+  async function handleMigrate(file: MediaFile) {
+    setMigrating(file.id);
+    try {
+      const res = await fetch("/api/media", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ staticUrl: file.url, category: file.category }),
+      });
+      if (res.ok) {
+        await fetchMedia();
+      }
+    } catch {
+      // ignore
+    }
+    setMigrating(null);
+  }
+
   const isEditable = (file: MediaFile) => file.source !== "static" && !file.id.startsWith("static-");
+  const isStatic = (file: MediaFile) => file.source === "static" || file.id.startsWith("static-");
 
   const filteredFiles =
     activeCategory === "Todos"
@@ -235,7 +255,7 @@ export default function AdminMediaPage() {
                 />
               </button>
 
-              {/* Action buttons overlay */}
+              {/* Action buttons overlay - DB files */}
               {isEditable(file) && (
                 <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition group-hover:opacity-100">
                   <button
@@ -261,6 +281,27 @@ export default function AdminMediaPage() {
                       <Loader2 size={14} className="animate-spin" />
                     ) : (
                       <Trash2 size={14} />
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Migrate button overlay - static files */}
+              {isStatic(file) && (
+                <div className="absolute right-2 top-2 flex gap-1 opacity-0 transition group-hover:opacity-100">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleMigrate(file);
+                    }}
+                    disabled={migrating === file.id}
+                    className="rounded-lg bg-white/90 p-2 text-gray-600 shadow-sm transition hover:bg-brand-blue hover:text-white disabled:opacity-50"
+                    title="Migrar a DB para poder editar"
+                  >
+                    {migrating === file.id ? (
+                      <Loader2 size={14} className="animate-spin" />
+                    ) : (
+                      <DatabaseZap size={14} />
                     )}
                   </button>
                 </div>
@@ -300,6 +341,20 @@ export default function AdminMediaPage() {
                     >
                       <Pencil size={12} />
                       Editar
+                    </button>
+                  )}
+                  {isStatic(file) && (
+                    <button
+                      onClick={() => handleMigrate(file)}
+                      disabled={migrating === file.id}
+                      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-gray-500 transition hover:bg-gray-100 hover:text-brand-blue"
+                    >
+                      {migrating === file.id ? (
+                        <Loader2 size={12} className="animate-spin" />
+                      ) : (
+                        <DatabaseZap size={12} />
+                      )}
+                      Migrar a DB
                     </button>
                   )}
                 </div>
