@@ -13,17 +13,28 @@ export default function ContactPage() {
   const locale = pathname.split("/")[1] || "es";
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [loadedAt] = useState(() => Date.now());
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
 
     const form = e.currentTarget;
+
+    // Honeypot check — bots fill hidden fields
+    const honeypot = (form.elements.namedItem("website") as HTMLInputElement).value;
+    if (honeypot) {
+      // Fake success so bot thinks it worked
+      setSent(true);
+      return;
+    }
+
     const data = {
       name: (form.elements.namedItem("name") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       type: (form.elements.namedItem("type") as HTMLSelectElement).value,
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+      _t: loadedAt,
     };
 
     try {
@@ -69,6 +80,11 @@ export default function ContactPage() {
       <section className="py-20">
         <div className="mx-auto max-w-xl px-4 sm:px-6">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot — invisible to humans, bots fill it */}
+            <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input type="text" name="website" id="website" tabIndex={-1} autoComplete="off" />
+            </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-brand-blue">
                 {t("name")}
