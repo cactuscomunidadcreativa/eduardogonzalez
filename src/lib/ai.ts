@@ -26,11 +26,13 @@ export async function getAIModel() {
   }
 
   if (!apiKey) {
-    throw new Error("No Anthropic API key configured");
+    throw new Error(
+      "No hay una API key de Anthropic configurada. Añádela en Ajustes del admin o en la variable de entorno ANTHROPIC_API_KEY."
+    );
   }
 
   const client = createAnthropic({ apiKey });
-  return client("claude-sonnet-4-20250514");
+  return client("claude-sonnet-4-6");
 }
 
 export async function getSystemPrompt(): Promise<string> {
@@ -56,17 +58,22 @@ export async function getSystemPrompt(): Promise<string> {
     // ignore
   }
 
-  const documents = await db.aITrainingDocument.findMany({
-    where: { active: true },
-    orderBy: { category: "asc" },
-  });
+  let knowledgeBase = "";
+  try {
+    const documents = await db.aITrainingDocument.findMany({
+      where: { active: true },
+      orderBy: { category: "asc" },
+    });
 
-  const knowledgeBase = documents
-    .map(
-      (doc: { title: string; content: string }) =>
-        `## ${doc.title}\n${doc.content}`
-    )
-    .join("\n\n");
+    knowledgeBase = documents
+      .map(
+        (doc: { title: string; content: string }) =>
+          `## ${doc.title}\n${doc.content}`
+      )
+      .join("\n\n");
+  } catch {
+    // Si la base de conocimiento no está disponible, seguimos con la personalidad base.
+  }
 
   const defaultPersonality = `Eres la representación digital de Eduardo González. Responde siempre en primera persona, como si fueras Eduardo hablando directamente con quien te escribe.
 
