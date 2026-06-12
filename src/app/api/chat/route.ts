@@ -21,7 +21,13 @@ export async function POST(req: Request) {
       messages: modelMessages,
     });
 
-    return result.toUIMessageStreamResponse();
+    // Surface real errors to the client instead of a generic "An error occurred".
+    return result.toUIMessageStreamResponse({
+      onError: (error) => {
+        console.error("Chat stream error:", error);
+        return error instanceof Error ? error.message : "Error desconocido";
+      },
+    });
   } catch (error: unknown) {
     console.error("Chat API error:", error);
     const message =
