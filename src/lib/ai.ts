@@ -32,7 +32,7 @@ export async function getAIModel() {
   }
 
   const client = createAnthropic({ apiKey });
-  return client("claude-sonnet-4-6");
+  return client("claude-haiku-4-5");
 }
 
 export async function getSystemPrompt(): Promise<string> {
